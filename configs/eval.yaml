@@ -1,0 +1,21 @@
+# @package _global_
+
+defaults:
+  - _self_
+  - datamodule: mnist # choose datamodule with `test_dataloader()` for evaluation
+  - model: mnist
+  - logger: null
+  - trainer: default
+  - paths: default
+  - extras: default
+  - hydra: default
+
+task_name: "eval"
+
+tags: ["dev"]
+
+# passing checkpoint path is necessary for evaluation
+ckpt_path: null
+config_path: null
+filter_run: null # filter the run based on the given pattern
+load_separetely: False

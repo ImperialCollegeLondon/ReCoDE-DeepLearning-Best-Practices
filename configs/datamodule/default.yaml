@@ -1,0 +1,10 @@
+file_list_train: /vol/paramonos2/projects/antoni/datasets/filelist_nikita_train_w_count.txt
+file_list_val: /vol/paramonos2/projects/antoni/datasets/filelist_nikita_val_w_count.txt
+file_list_test: null
+
+# For Dataloader
+batch_size: 32
+num_workers: 8
+pin_memory: True
+persistent_workers: True
+
