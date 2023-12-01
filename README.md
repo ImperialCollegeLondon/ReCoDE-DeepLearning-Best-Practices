@@ -23,8 +23,29 @@ This project aims to showcase best practices and tools essential for initiating 
  - Einops for easy tensor manipulation
  - Learning to start training on GPU (CUDA_VISIBLE_DEVICES)
  - Using a template to start project (https://github.com/antonibigata/minimal-lightning-hydra-template)
- - Fire for easy command line interface
 
+## Steps (temporary)
+I think the best approch would be to create own github project based on instructions of this one.
+
+ 1. Read about the template and how to use it for new project.
+ 2. Create a new project based on the template.
+ 3. Read about hydra and how to use it for configuration management.
+ 4. Read about pytorch lightning and how to use it for training.
+ 5. Start by creating a datamodule and dataset file with corresponding config.
+ 6. Test it.
+ 7. Create model + configuration.
+ 8. Test it.
+ (8.5 Read about einops and reimplement part of forward computation)
+ 9. Create trainer + configuration.
+ 10. Try a debug run.
+ 11. Learn how to use wandb for logging.
+ 12. Start a training run.
+ 13. Get results on wandb.
+ 14. Improve model.
+ 15. Start a new training run with new model via command line.
+ 16. Use model for inference on custom data.
+ 17. Use project as a python package.
+ 18. Give ressources for further best practices (Compiling, optimizing training loop, Fire package, etc)
 
 ## How to run
 
