@@ -57,7 +57,7 @@ To help you become acquainted with the key libraries used in this project, I hav
 
 For a more comprehensive understanding, I also recommend the following tutorials. They provide in-depth knowledge and are great resources for both beginners and experienced users:
 
-- **[Pytorch Lightning Tutorial]([https://pytorch-lightning.readthedocs.io/en/latest/starter/new-project.html](https://lightning.ai/docs/pytorch/stable/starter/introduction.html))**: An official guide to starting a new project with Pytorch Lightning, offering step-by-step instructions and best practices.
+- **[Pytorch Lightning Tutorial](https://lightning.ai/docs/pytorch/stable/starter/introduction.html)**: An official guide to starting a new project with Pytorch Lightning, offering step-by-step instructions and best practices.
 - **[Hydra Documentation](https://hydra.cc/docs/intro)**: The official introduction to Hydra, covering its core principles and how to integrate it into your applications.
 - **[Wandb Quickstart](https://docs.wandb.ai/quickstart)**: A quickstart guide for Wandb, a tool for experiment tracking, visualization, and comparison. Learn how to integrate Wandb into your machine learning projects.
 - **[Einops Basics](https://einops.rocks/1-einops-basics/)**: An introductory tutorial to Einops, focusing on the basics and fundamental concepts of the library.
