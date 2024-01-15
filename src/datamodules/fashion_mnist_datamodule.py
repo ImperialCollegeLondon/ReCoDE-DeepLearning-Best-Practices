@@ -2,16 +2,18 @@ from typing import Optional
 
 from pytorch_lightning import LightningDataModule
 from torch.utils.data import DataLoader, Dataset
+from torchvision import transforms
 
 import sys
 import pyrootutils
 
 root = pyrootutils.setup_root(__file__, pythonpath=True)
 sys.path.append(root)
-from src.datamodules.components.rotation_dataloader import RotationDataset, collate
+
+from src.datamodules.components.fashion_mnist_dataset import CustomFashionMNIST
 
 
-class RotationDataModule(LightningDataModule):
+class FashionMNISTDataModule(LightningDataModule):
     """
     A DataModule implements 5 key methods:
 
@@ -40,11 +42,7 @@ class RotationDataModule(LightningDataModule):
 
     def __init__(
         self,
-        file_list_train: str,
-        file_list_val: str = None,
-        file_list_test: str = None,
-        max_frames: int = None,
-        smooth_output: bool = False,
+        data_dir: str,
         batch_size: int = 64,
         num_workers: int = 0,
         pin_memory: bool = False,
@@ -56,9 +54,16 @@ class RotationDataModule(LightningDataModule):
         # also ensures init params will be stored in ckpt
         self.save_hyperparameters(logger=False)
 
+        self.transform = transforms.Compose([transforms.ToTensor()])  # Add any additional transformations here
+
         self.data_train: Optional[Dataset] = None
         self.data_val: Optional[Dataset] = None
-        self.data_test: Optional[Dataset] = None
+        # self.data_test: Optional[Dataset] = None # Uncomment if you have a test dataset
+
+    def prepare_data(self):
+        # Download the data (if not already present)
+        CustomFashionMNIST(self.hparams.data_dir, train=True, download=True)
+        CustomFashionMNIST(self.hparams.data_dir, train=False, download=True)
 
     def setup(self, stage: Optional[str] = None):
         """Load data. Set variables: `self.data_train`, `self.data_val`, `self.data_test`.
@@ -67,24 +72,12 @@ class RotationDataModule(LightningDataModule):
         careful not to execute things like random split twice!
         """
         # load and split datasets only if not loaded already
-        if not self.data_train and not self.data_val and not self.data_test:
-            self.data_train = RotationDataset(
-                self.hparams.file_list_train,
-                max_frames=self.hparams.max_frames,
-                smooth_output=self.hparams.smooth_output,
-            )
-            if self.hparams.file_list_val:
-                self.data_val = RotationDataset(
-                    self.hparams.file_list_val,
-                    max_frames=self.hparams.max_frames,
-                    smooth_output=self.hparams.smooth_output,
-                )
-            if self.hparams.file_list_test:
-                self.data_test = RotationDataset(
-                    self.hparams.file_list_test,
-                    max_frames=self.hparams.max_frames,
-                    smooth_output=self.hparams.smooth_output,
-                )
+        if self.data_train is None:
+            self.data_train = CustomFashionMNIST(self.hparams.data_dir, train=True, transform=self.transform)
+        if self.data_val is None:
+            self.data_val = CustomFashionMNIST(self.hparams.data_dir, train=False, transform=self.transform)
+        # if self.data_test is None:
+        #     self.data_test = CustomFashionMNIST(self.data_dir, train=False)
 
     def train_dataloader(self):
         return DataLoader(
@@ -93,7 +86,6 @@ class RotationDataModule(LightningDataModule):
             num_workers=self.hparams.num_workers,
             pin_memory=self.hparams.pin_memory,
             persistent_workers=self.hparams.persistent_workers,
-            collate_fn=collate,
             shuffle=True,
         )
 
@@ -105,36 +97,60 @@ class RotationDataModule(LightningDataModule):
                 num_workers=self.hparams.num_workers,
                 pin_memory=self.hparams.pin_memory,
                 persistent_workers=self.hparams.persistent_workers,
-                collate_fn=collate,
                 shuffle=False,
             )
         else:
             return None
 
-    def test_dataloader(self):
-        if self.data_test:
-            return DataLoader(
-                dataset=self.data_test,
-                batch_size=self.hparams.batch_size,
-                num_workers=self.hparams.num_workers,
-                pin_memory=self.hparams.pin_memory,
-                persistent_workers=self.hparams.persistent_workers,
-                collate_fn=collate,
-                shuffle=False,
-            )
-        else:
-            return None
+    # def test_dataloader(self):
+    #     if self.data_test:
+    #         return DataLoader(
+    #             dataset=self.data_test,
+    #             batch_size=self.hparams.batch_size,
+    #             num_workers=self.hparams.num_workers,
+    #             pin_memory=self.hparams.pin_memory,
+    #             persistent_workers=self.hparams.persistent_workers,
+    #             shuffle=False,
+    #         )
+    #     else:
+    #         return None
 
 
 if __name__ == "__main__":
     import hydra
     import omegaconf
     import pyrootutils
+    from PIL import Image
 
     root = pyrootutils.setup_root(__file__, pythonpath=True)
-    cfg = omegaconf.OmegaConf.load(root / "configs" / "datamodule" / "rotation_datamodule.yaml")
-    # cfg.data_dir = str(root / "data")
+    cfg = omegaconf.OmegaConf.load(root / "configs" / "datamodule" / "fashion_mnist_datamodule.yaml")
+
+    # Small hack to allow running this script without staring main config
+    del cfg["defaults"]
+    cfg["batch_size"] = 8
+
     print(cfg)
     data = hydra.utils.instantiate(cfg)
     data.prepare_data()
     data.setup()
+
+    # Check the dataset loads correctly
+    image, label = next(iter(data.train_dataloader()))
+    print("Image train shape:", image.shape)
+    print("Image train range:", image.min(), image.max())
+    print("Label train:", label)
+    print("Total number of images:", len(data.data_train))
+
+    # Save one image to check it looks OK
+    image = (image[0].squeeze().numpy() * 255).astype("uint8")
+    image = Image.fromarray(image)
+    image.save(f"{root}/logs/data_check/image_with_label_{label[0]}.png")
+
+    image, label = next(iter(data.val_dataloader()))
+    print("Image val shape:", image.shape)
+    print("Image val range:", image.min(), image.max())
+    print("Label val:", label)
+    print("Total number of images:", len(data.data_val))
+    image = (image[0].squeeze().numpy() * 255).astype("uint8")
+    image = Image.fromarray(image)
+    image.save(f"{root}/logs/data_check/image_val_with_label_{label[0]}.png")

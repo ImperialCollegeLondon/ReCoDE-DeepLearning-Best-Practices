@@ -1,0 +1,6 @@
+_target_: src.datamodules.fashion_mnist_datamodule.FashionMNISTDataModule
+
+defaults:
+  - default
+
+data_dir: ./data
