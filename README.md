@@ -47,6 +47,50 @@ I think the best approch would be to create own github project based on instruct
  17. Use project as a python package.
  18. Give ressources for further best practices (Compiling, optimizing training loop, Fire package, etc)
 
+## Getting Familiar with the Libraries
+
+To help you become acquainted with the key libraries used in this project, I have prepared learning notebooks that cover the basics of each. These interactive notebooks are an excellent way to get hands-on experience. You can find them in the [learning](learning) folder. The notebooks are designed to introduce you to the core concepts and functionalities of each library:
+
+- **[Pytorch Lightning](learning/Learning_about_lightning.ipynb)**: This notebook introduces Pytorch Lightning, a library that simplifies the training process of PyTorch models. It covers basic concepts like creating models, training loops, and leveraging Lightning's built-in functionalities for more efficient training.
+- **[Hydra](learning/Learning_about_hydra.ipynb)**: Hydra is a framework for elegantly configuring complex applications. This notebook will guide you through its configuration management capabilities, demonstrating how to streamline your project's settings and parameters.
+- **[Einops](learning/Learning_about_einops.ipynb)**: Einops is a library for tensor operations and manipulation. Learn how to use Einops for more readable and maintainable tensor transformations in this notebook.
+
+For a more comprehensive understanding, I also recommend the following tutorials. They provide in-depth knowledge and are great resources for both beginners and experienced users:
+
+- **[Pytorch Lightning Tutorial](https://pytorch-lightning.readthedocs.io/en/latest/starter/new-project.html)**: An official guide to starting a new project with Pytorch Lightning, offering step-by-step instructions and best practices.
+- **[Hydra Documentation](https://hydra.cc/docs/intro)**: The official introduction to Hydra, covering its core principles and how to integrate it into your applications.
+- **[Wandb Quickstart](https://docs.wandb.ai/quickstart)**: A quickstart guide for Wandb, a tool for experiment tracking, visualization, and comparison. Learn how to integrate Wandb into your machine learning projects.
+- **[Einops Basics](https://einops.rocks/1-einops-basics/)**: An introductory tutorial to Einops, focusing on the basics and fundamental concepts of the library.
+
+By exploring these notebooks and tutorials, you will gain a solid foundation in these libraries, which are integral to the project's development.
+
+## Steps When Starting a New Project
+
+**1. Create a New Project Based on the Template**:
+Start by using the template available at [Minimal Lightning Hydra Template](https://github.com/antonibigata/minimal-lightning-hydra-template). To create a new project from this template:
+- Navigate to the GitHub page of the template.
+- Click on the "Use this template" button, located in the top right corner.
+- Follow the on-screen instructions to create a new repository based on this template.
+
+Alternatively, if you prefer to clone the repository:
+```bash
+git clone https://github.com/antonibigata/minimal-lightning-hydra-template.git your-project-name
+cd your-project-name
+rm -rf .git
+```
+This will clone the repository and remove its git history, allowing you to start a fresh project.
+
+**2. Create a Datamodule and Dataset File with Corresponding Configuration**:
+Data manipulation code should be organized in `src/datamodules`. Key components include:
+- **Datamodule**: Responsible for downloading data, and splitting it into training, validation, and testing sets.
+- **Dataset**: Handles data loading and applying transformations.
+
+Define these components in `datamodule.py` and `components/dataset.py`, respectively. Configure the datamodule in `configs/datamodule/datamodule.yaml`.
+
+For efficient experimentation with multiple datasets, use a `default.yaml` file in the `configs` folder to define common parameters like `batch_size` and `num_workers`. Create separate configuration files for each dataset by inheriting from the default configuration. This setup allows you to switch datasets easily by modifying the datamodule configuration.
+
+As an example, we will use the FashionMNIST dataset. I suggest writing your own datamodule and dataset files, but you can also copy the ones from this project. It is also good practice to write a small test to ensure that the datamodule and dataset are functioning as expected. Examples of these tests can be found at the end of both files.
+
 ## How to run
 
 Install dependencies
