@@ -1,0 +1,6 @@
+_target_: src.models.components.conv_net.ConvNet
+in_channels: 1 # 1 channel for FashionMNIST
+channel_sizes: [16, 32, 64] # n convolutional layers
+output_size: 10 # 10 classes
+hidden_size: 64 # for the fully connected layer
+

@@ -91,6 +91,19 @@ For efficient experimentation with multiple datasets, use a `default.yaml` file 
 
 As an example, we will use the FashionMNIST dataset. I suggest writing your own datamodule and dataset files, but you can also copy the ones from this project. It is also good practice to write a small test to ensure that the datamodule and dataset are functioning as expected. Examples of these tests can be found at the end of both files.
 
+**3. Create Model and Networks with Corresponding Configuration**:
+In this step, you will define your main model within the `src/models` directory. This model should be a PyTorch Lightning module, which means it inherits from `LightningModule`. The model encapsulates your machine learning algorithm, including methods for the forward pass, loss calculation, and the optimizer step. It's also where you'll define the main training, validation, and testing loops.
+
+For configuration, similar to the datamodule, set up a default configuration in `configs/model/default.yaml`. This file should contain settings common to all models. Then, for specific models, create separate configuration files within the same directory. This approach allows for flexibility and ease in switching between different model configurations.
+
+Your model will rely on networks, which are essentially the building blocks of your model, such as layers or a set of layers that perform specific functions (like encoders and decoders in autoencoders). Define these networks in `src/models/components`. Networks are versatile and can be reused across different models. For instance, an encoder network designed for one model can potentially be used in another model with similar requirements.
+
+Network configurations should be placed in `configs/model/net`. This maintains organization and clarity, especially when dealing with multiple networks.
+
+As a practical exercise, start by creating a simple model and network. Even if it's basic, this exercise will help you understand the process of building and integrating these components. Use the examples provided in this project as a reference or solution. To ensure your model and networks are set up correctly, it's advisable to write unit tests. These tests verify the functionality of each component. You can find examples of such tests at the end of the respective files in this project.
+
+By following these steps, you'll gain hands-on experience in setting up and configuring models and networks, which are crucial for developing effective machine learning solutions.
+
 ## How to run
 
 Install dependencies
