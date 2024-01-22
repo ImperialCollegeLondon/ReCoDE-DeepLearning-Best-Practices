@@ -124,6 +124,8 @@ conda activate myenv
 pip install -r requirements.txt
 ```
 
+!!! Note that Python 3.11 is not supported by Hydra yet, so you need to use Python 3.10 or less. !!!
+
 Train model with default configuration
 
 ```bash

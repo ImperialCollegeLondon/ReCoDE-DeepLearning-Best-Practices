@@ -1,0 +1,21 @@
+_target_: src.models.classification_model.ClassificationModel
+
+defaults:
+  - defaults
+  - net: dense_net
+ 
+criterion:
+  _target_: torch.nn.CrossEntropyLoss
+  _partial_: true
+
+metrics: # Add metrics here
+  - target: torchmetrics.Accuracy
+    name: acc
+    params:
+      task: multiclass
+      num_classes: 10
+  - target: torchmetrics.F1Score
+    name: F1
+    params:
+      task: multiclass
+      num_classes: 10

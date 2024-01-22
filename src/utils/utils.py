@@ -5,11 +5,9 @@ from pathlib import Path
 from typing import Callable, List
 from functools import wraps
 import os
-import torch
-from einops import repeat
-import wandb
 import hydra
 import yaml
+import importlib
 from omegaconf import DictConfig
 from pytorch_lightning import Callback
 from pytorch_lightning.loggers import Logger
@@ -17,9 +15,6 @@ from pytorch_lightning.utilities import rank_zero_only
 from pytorch_lightning.utilities import model_summary
 from einops import rearrange
 from src.utils import pylogger, rich_utils
-import torchvision
-import torchaudio
-import moviepy.editor as mpy
 
 log = pylogger.get_pylogger(__name__)
 
@@ -119,6 +114,26 @@ def task_wrapper(task_func: Callable) -> Callable:
         return metric_dict, object_dict
 
     return wrap
+
+
+def instantiate_from_config(config):
+    if "target" not in config:
+        if config == "__is_first_stage__":
+            return None
+        elif config == "__is_unconditional__":
+            return None
+        raise KeyError("Expected key `target` to instantiate.")
+    return get_obj_from_str(config["target"])(**config.get("params", dict()))
+
+
+def get_obj_from_str(string, reload=False, invalidate_cache=True):
+    module, cls = string.rsplit(".", 1)
+    if invalidate_cache:
+        importlib.invalidate_caches()
+    if reload:
+        module_imp = importlib.import_module(module)
+        importlib.reload(module_imp)
+    return getattr(importlib.import_module(module, package=None), cls)
 
 
 def extras(cfg: DictConfig) -> None:
@@ -389,58 +404,6 @@ def save_summary(model, save_path, logger):
     # If logger is wandb, log the summary
     if logger is not None and len(logger):
         logger[0].experiment.save(save_path + "/model_summary.txt", policy="now")
-
-
-def log_videos(img_cond, img_pred, logger, audio=None, prefix="", fps=25, sample_rate=16000):
-    repeat_cond = repeat(img_cond, "c h w -> t c h w", t=img_pred.shape[0])
-    grid = torch.cat([repeat_cond, img_pred], dim=-1).cpu() * 255.0
-    temp_video_path = "temp.mp4"
-    success = save_audio_video(
-        grid,
-        audio=audio,
-        frame_rate=fps,
-        sample_rate=sample_rate,
-        save_path=temp_video_path,
-        keep_intermediate=False,
-    )
-    logger.experiment.log(
-        {
-            f"{prefix}/generated_videos": wandb.Video(
-                temp_video_path if success else grid,
-                caption="diffused videos (condition left, generated right)",
-                fps=fps,
-            )
-        },
-    )
-    if success:
-        os.remove(temp_video_path)
-
-
-def save_audio_video(
-    video, audio=None, frame_rate=25, sample_rate=16000, save_path="temp.mp4", keep_intermediate=False
-):
-    """Save audio and video to a single file.
-    video: (t, c, h, w)
-    audio: (channels t)
-    """
-    save_path = str(save_path)
-    try:
-        torchvision.io.write_video("temp_video.mp4", rearrange(video, "t c h w -> t h w c"), frame_rate)
-        video_clip = mpy.VideoFileClip("temp_video.mp4")
-        if audio is not None:
-            torchaudio.save("temp_audio.wav", audio, sample_rate)
-            audio_clip = mpy.AudioFileClip("temp_audio.wav")
-            video_clip = video_clip.set_audio(audio_clip)
-        video_clip.write_videofile(save_path, fps=frame_rate, codec="libx264", audio_codec="aac")
-        if not keep_intermediate:
-            os.remove("temp_video.mp4")
-            if audio is not None:
-                os.remove("temp_audio.wav")
-        return 1
-    except Exception as e:
-        print(e)
-        print("Saving video to file failed")
-        return 0
 
 
 def ask_until_response(question, expected=[]):

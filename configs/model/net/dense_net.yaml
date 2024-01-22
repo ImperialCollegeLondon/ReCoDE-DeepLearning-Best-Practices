@@ -1,4 +1,4 @@
-_target_: src.models.components.networks.dense_net.DenseNet
+_target_: src.models.components.nets.dense_net.DenseNet
 input_size: 784 # 28 * 28 * 1
 hidden_sizes: [128, 64, 32] # n fully connected layers 
 output_size: 10 # 10 classes
