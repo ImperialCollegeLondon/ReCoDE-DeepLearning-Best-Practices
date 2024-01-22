@@ -96,7 +96,7 @@ In this step, you will define your main model within the `src/models` directory.
 
 For configuration, similar to the datamodule, set up a default configuration in `configs/model/default.yaml`. This file should contain settings common to all models. Then, for specific models, create separate configuration files within the same directory. This approach allows for flexibility and ease in switching between different model configurations.
 
-Your model will rely on networks, which are essentially the building blocks of your model, such as layers or a set of layers that perform specific functions (like encoders and decoders in autoencoders). Define these networks in `src/models/components`. Networks are versatile and can be reused across different models. For instance, an encoder network designed for one model can potentially be used in another model with similar requirements.
+Your model will rely on networks, which are essentially the building blocks of your model, such as layers or a set of layers that perform specific functions (like encoders and decoders in autoencoders). Define these networks in `src/models/components/nets`. Networks are versatile and can be reused across different models. For instance, an encoder network designed for one model can potentially be used in another model with similar requirements.
 
 Network configurations should be placed in `configs/model/net`. This maintains organization and clarity, especially when dealing with multiple networks.
 

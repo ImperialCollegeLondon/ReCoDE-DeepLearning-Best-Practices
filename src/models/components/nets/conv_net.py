@@ -49,7 +49,7 @@ if __name__ == "__main__":
     import torch
 
     model = ConvNet()
-    input_tensor = torch.randn(32, 1, 32, 32)
+    input_tensor = torch.randn(32, 1, 28, 28)
     output = model(input_tensor)
     print("input.shape:", input_tensor.shape)  # input.shape: torch.Size([32, 1, 28, 28])
     print("output.shape:", output.shape)  # pythooutput.shape: torch.Size([32, 10])
