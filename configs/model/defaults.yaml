@@ -1,10 +1,4 @@
-_target_: 
-
-recons_loss_fn:
-  _target_: torch.nn.functional.l1_loss 
-  _partial_: true
-
 defaults:
-  - optimizer: adamw
+  - optimizer: adam
   - scheduler: none
   

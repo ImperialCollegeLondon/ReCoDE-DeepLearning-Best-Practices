@@ -1,13 +1,13 @@
-from typing import Any, List
+from typing import Any, List, Union
 
 import torch
 from pytorch_lightning import LightningModule
-from torchmetrics import MaxMetric, MeanMetric
-from torchmetrics.classification.accuracy import Accuracy
+from torchmetrics import MeanMetric, Metric
+from src.utils.utils import instantiate_from_config
 
 
-class MNISTLitModule(LightningModule):
-    """Example of LightningModule for MNIST classification.
+class ClassificationModel(LightningModule):
+    """Example of LightningModule for FashionMNIST classification.
 
     A LightningModule organizes your PyTorch code into 6 sections:
         - Computations (init)
@@ -26,6 +26,8 @@ class MNISTLitModule(LightningModule):
         net: torch.nn.Module,
         optimizer: torch.optim.Optimizer,
         scheduler: torch.optim.lr_scheduler,
+        criterion: torch.nn.Module,
+        metrics: List[Union[Metric, Metric]],
     ):
         super().__init__()
 
@@ -36,28 +38,32 @@ class MNISTLitModule(LightningModule):
         self.net = net
 
         # loss function
-        self.criterion = torch.nn.CrossEntropyLoss()
+        self.criterion = criterion()
 
         # metric objects for calculating and averaging accuracy across batches
-        self.train_acc = Accuracy()
-        self.val_acc = Accuracy()
-        self.test_acc = Accuracy()
+        self.train_metrics = {}
+        for train_metric in metrics:
+            name = train_metric["name"]
+            train_metric = instantiate_from_config(train_metric)
+            self.train_metrics[f"train/{name}"] = train_metric
+        self.val_metrics = {}
+        for val_metric in metrics:
+            name = val_metric["name"]
+            val_metric = instantiate_from_config(val_metric)
+            self.val_metrics[f"val/{name}"] = val_metric
+        self.test_metrics = {}
+        for test_metric in metrics:
+            name = test_metric["name"]
+            test_metric = instantiate_from_config(test_metric)
+            self.test_metrics[f"test/{name}"] = test_metric
 
         # for averaging loss across batches
         self.train_loss = MeanMetric()
         self.val_loss = MeanMetric()
         self.test_loss = MeanMetric()
 
-        # for tracking best so far validation accuracy
-        self.val_acc_best = MaxMetric()
-
     def forward(self, x: torch.Tensor):
         return self.net(x)
-
-    def on_train_start(self):
-        # by default lightning executes validation step sanity checks before training starts,
-        # so we need to make sure val_acc_best doesn't store accuracy from these checks
-        self.val_acc_best.reset()
 
     def step(self, batch: Any):
         x, y = batch
@@ -70,51 +76,40 @@ class MNISTLitModule(LightningModule):
         loss, preds, targets = self.step(batch)
 
         # update and log metrics
+        for train_metric_name in self.train_metrics:
+            out_metric = self.train_metrics[train_metric_name](preds.cpu(), targets.cpu())
+            self.log(train_metric_name, out_metric, prog_bar=True)
         self.train_loss(loss)
-        self.train_acc(preds, targets)
-        self.log("train/loss", self.train_loss, on_step=False, on_epoch=True, prog_bar=True)
-        self.log("train/acc", self.train_acc, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("train/loss", self.train_loss, prog_bar=True)
 
         # we can return here dict with any tensors
         # and then read it in some callback or in `training_epoch_end()` below
         # remember to always return loss from `training_step()` or backpropagation will fail!
         return {"loss": loss, "preds": preds, "targets": targets}
 
-    def training_epoch_end(self, outputs: List[Any]):
-        # `outputs` is a list of dicts returned from `training_step()`
-        pass
-
     def validation_step(self, batch: Any, batch_idx: int):
         loss, preds, targets = self.step(batch)
 
         # update and log metrics
+        for val_metric_name in self.val_metrics:
+            out_metric = self.val_metrics[val_metric_name](preds.cpu(), targets.cpu())
+            self.log(val_metric_name, out_metric, prog_bar=True)
         self.val_loss(loss)
-        self.val_acc(preds, targets)
-        self.log("val/loss", self.val_loss, on_step=False, on_epoch=True, prog_bar=True)
-        self.log("val/acc", self.val_acc, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("val/loss", self.val_loss, prog_bar=True)
 
         return {"loss": loss, "preds": preds, "targets": targets}
-
-    def validation_epoch_end(self, outputs: List[Any]):
-        acc = self.val_acc.compute()  # get current val acc
-        self.val_acc_best(acc)  # update best so far val acc
-        # log `val_acc_best` as a value through `.compute()` method, instead of as a metric object
-        # otherwise metric would be reset by lightning after each epoch
-        self.log("val/acc_best", self.val_acc_best.compute(), prog_bar=True)
 
     def test_step(self, batch: Any, batch_idx: int):
         loss, preds, targets = self.step(batch)
 
         # update and log metrics
+        for test_metric_name in self.test_metrics:
+            out_metric = self.test_metrics[test_metric_name](preds.cpu(), targets.cpu())
+            self.log(test_metric_name, out_metric, prog_bar=True)
         self.test_loss(loss)
-        self.test_acc(preds, targets)
-        self.log("test/loss", self.test_loss, on_step=False, on_epoch=True, prog_bar=True)
-        self.log("test/acc", self.test_acc, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("test/loss", self.test_loss, prog_bar=True)
 
         return {"loss": loss, "preds": preds, "targets": targets}
-
-    def test_epoch_end(self, outputs: List[Any]):
-        pass
 
     def configure_optimizers(self):
         """Choose what optimizers and learning-rate schedulers to use in your optimization.
@@ -136,13 +131,3 @@ class MNISTLitModule(LightningModule):
                 },
             }
         return {"optimizer": optimizer}
-
-
-if __name__ == "__main__":
-    import hydra
-    import omegaconf
-    import pyrootutils
-
-    root = pyrootutils.setup_root(__file__, pythonpath=True)
-    cfg = omegaconf.OmegaConf.load(root / "configs" / "model" / "mnist.yaml")
-    _ = hydra.utils.instantiate(cfg)
