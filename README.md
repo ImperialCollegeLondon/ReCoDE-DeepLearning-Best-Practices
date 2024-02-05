@@ -136,7 +136,7 @@ Let's dive into the `configs/train.yaml` file, which serves as the master config
 
 By configuring these components in the `configs/train.yaml` file, you create a cohesive and flexible training environment. This setup allows you to easily adjust parameters and components to suit different experiments and project needs.
 
-**6. Start the Training**:
+### **6. Start the Training**:
 Now that you have set up all the necessary components, you are ready to initiate the training of your model. Begin by executing the following command:
 
 ```bash
