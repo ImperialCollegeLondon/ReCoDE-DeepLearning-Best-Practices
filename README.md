@@ -66,7 +66,7 @@ By exploring these notebooks and tutorials, you will gain a solid foundation in 
 
 ## Steps When Starting a New Project
 
-**1. Create a New Project Based on the Template**:
+### **1. Create a New Project Based on the Template**:
 Start by using the template available at [Minimal Lightning Hydra Template](https://github.com/antonibigata/minimal-lightning-hydra-template). To create a new project from this template:
 - Navigate to the GitHub page of the template.
 - Click on the "Use this template" button, located in the top right corner.
@@ -80,7 +80,7 @@ rm -rf .git
 ```
 This will clone the repository and remove its git history, allowing you to start a fresh project.
 
-**2. Create a Datamodule and Dataset File with Corresponding Configuration**:
+### **2. Create a Datamodule and Dataset File with Corresponding Configuration**:
 Data manipulation code should be organized in `src/datamodules`. Key components include:
 - **Datamodule**: Responsible for downloading data, and splitting it into training, validation, and testing sets.
 - **Dataset**: Handles data loading and applying transformations.
@@ -91,7 +91,7 @@ For efficient experimentation with multiple datasets, use a `default.yaml` file 
 
 As an example, we will use the FashionMNIST dataset. I suggest writing your own datamodule and dataset files, but you can also copy the ones from this project. It is also good practice to write a small test to ensure that the datamodule and dataset are functioning as expected. Examples of these tests can be found at the end of both files.
 
-**3. Create Networks with Corresponding Configuration**:
+### **3. Create Networks with Corresponding Configuration**:
 Your main model will rely on networks, which are essentially the your building blocks, such as layers or a set of layers that perform specific functions (like encoders and decoders in autoencoders). Define these networks in `src/models/components/nets`. Networks are versatile and can be reused across different models. For instance, an encoder network designed for one model can potentially be used in another model with similar requirements.
 
 Network configurations should be placed in `configs/model/net`. This maintains organization and clarity, especially when dealing with multiple networks.
@@ -100,14 +100,14 @@ As a practical exercise, start by creating a simple model and network. Even if i
 
 By following these steps, you'll gain hands-on experience in setting up and configuring models and networks, which are crucial for developing effective machine learning solutions.
 
-**4. Create Model and Configuration**:
+### **4. Create Model and Configuration**:
 In this step, you will define your main model within the `src/models` directory. This model should be a PyTorch Lightning module, which means it inherits from `LightningModule`. The model encapsulates your machine learning algorithm, including methods for the forward pass, loss calculation, and the optimizer step. It's also where you'll define the main training, validation, and testing loops.
 
 For configuration, similar to the datamodule, set up a default configuration in `configs/model/default.yaml`. This file should contain settings common to all models. Then, for specific models, create separate configuration files within the same directory. This approach allows for flexibility and ease in switching between different model configurations.
 
 To get started, you're encouraged to write your own model, but do take the time to examine the example model included in this project. It serves as a practical reference to understand the standard structure and components of a PyTorch Lightning module. Additionally, refer to the PyTorch Lightning documentation, particularly the LightningModule section at [LightningModule Documentation](https://lightning.ai/docs/pytorch/latest/common/lightning_module.html). This resource is invaluable for understanding the different methods in a LightningModule and how they interact in a real-world scenario. By studying these examples and the documentation, you will gain a deeper insight into the efficient implementation and functionalities of your machine learning model.
 
-**5. Modify Training Configuration**:
+### **5. Modify Training Configuration**:
 At this point, you have assembled all the essential components needed to commence the training of your model. Central to this process is the PyTorch Lightning `Trainer`, which orchestrates the training workflow. The Trainer manages crucial aspects of the training process, such as:
 
 - Number of training epochs.
@@ -167,6 +167,51 @@ python src/train.py trainer=gpu
 ```
 
 This command instructs the Trainer to utilize available GPU resources, harnessing their computational power for more efficient training.
+
+### **7. Enhanced Experiment Tracking and Visualization**:
+
+Logging training progress and metrics is crucial for monitoring a model's performance throughout the training process. This functionality is configured within the `logger` section of `configs/train.yaml`. By default, the `logger` is set to `null`, indicating that no logging will occur. However, enabling logging is straightforward and highly recommended for a more insightful training experience.
+
+
+[Wandb (Weights & Biases)](https://wandb.ai) is a widely used platform for experiment tracking, visualization, and analysis. It offers a comprehensive suite of tools to log metrics, hyperparameters, outputs, and much more. To incorporate Wandb into your project:
+
+- 1. **Installation**: First, ensure that the Wandb library is installed. If not, you can install it using pip:
+
+```bash
+pip install wandb
+```
+
+- 2. **Create an Account**: Visit the [Wandb website](https://wandb.ai) to sign up for an account. Signing up is free and allows you to track and visualize your experiments in one place.
+
+- 3. **Authenticate**: Obtain your Wandb API key from your account settings. Then, authenticate your local environment by running:
+
+```bash
+wandb login
+```
+
+This command prompts you to enter your API key, securely linking your experiments with your Wandb account.
+
+- 4. **Enable Wandb Logging**: To start logging to Wandb, modify the `logger` section in `configs/train.yaml` by setting it to `wandb`:
+
+```yaml
+logger: wandb
+```
+
+Alternatively, you can directly activate Wandb logging via the command line when you start your training:
+
+```bash
+python src/train.py logger=wandb
+```
+
+**What Can You Log?**
+
+Wandb's flexibility allows you to log a wide array of data, from training and validation metrics to rich media such as images, videos, and even audio clips. This capability is invaluable for in-depth monitoring and analysis of your training process, offering insights that can guide model improvement.
+
+For detailed instructions on logging specific data types and leveraging Wandb's full potential, refer to the [Wandb Documentation](https://docs.wandb.ai/guides/track/log). Here, you'll find a treasure trove of guides and examples to enhance your logging strategy.
+
+**Logging Images and Confusion Matrices**
+
+In addition to the standard training and validation metrics, this tutorial also covers how to log images and confusion matrices using Wandb. Logging images can provide visual feedback on the model's performance, such as the accuracy of image classifications or the quality of generated images. Confusion matrices, on the other hand, offer a detailed view of the model's prediction accuracy across different classes, helping identify areas where the model may be struggling. Both of these logging capabilities are powerful tools for diagnosing model behavior and guiding improvements. Detailed instructions on how to implement these logging features are included, allowing you to gain deeper insights into your model's performance and make data-driven decisions to enhance its accuracy and effectiveness.
 
 ## How to run
 
