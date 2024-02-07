@@ -212,6 +212,63 @@ For detailed instructions on logging specific data types and leveraging Wandb's 
 
 In addition to the standard training and validation metrics, this tutorial also covers how to log images and confusion matrices using Wandb. Logging images can provide visual feedback on the model's performance, such as the accuracy of image classifications or the quality of generated images. Confusion matrices, on the other hand, offer a detailed view of the model's prediction accuracy across different classes, helping identify areas where the model may be struggling. Both of these logging capabilities are powerful tools for diagnosing model behavior and guiding improvements. Detailed instructions on how to implement these logging features are included, allowing you to gain deeper insights into your model's performance and make data-driven decisions to enhance its accuracy and effectiveness.
 
+### **8. Evaluate the model**:
+
+After completing the training phase, it's crucial to assess the model's performance using a separate test set. This step is vital for gauging the model's generalization abilities—essentially, its capacity to make accurate predictions on new, unseen data. This unbiased evaluation helps in understanding how the model would perform in real-world scenarios.
+
+**Initiating the Model Evaluation**
+
+To start the evaluation process, use the following command:
+
+```bash
+python src/eval.py ckpt_path=PATH_TO_CHECKPOINT
+```
+
+Here, `PATH_TO_CHECKPOINT` should be replaced with the actual path to your saved model checkpoint, for example, `logs/train/runs/2024-02-05_10-41-42`. This path points to the specific model folder checkpoint you intend to evaluate. The `eval.py` script is designed to load this checkpoint and then carry out the evaluation on the designated test dataset.
+
+**Note on Dataset Usage**:
+
+For illustrative purposes, the evaluation script in this project is configured to run on the FashionMNIST dataset's validation set. However, for a thorough evaluation of your model, especially when working with your own datasets, it is strongly recommended to perform this assessment on a dedicated test set. The test set should consist of data that has not been used during the training or validation phases to ensure an impartial evaluation of the model's performance.
+
+**Locating the Checkpoint File**:
+
+The checkpoint file is typically saved in a directory structured by the training date and time, for example, `logs/train/runs/YYYY-MM-DD_HH-MM-SS`. If you're unsure about the checkpoint path, refer to the training logs or the directory where your training outputs are saved. This can help you identify the correct checkpoint file for evaluation.
+
+**Best Practices for Evaluation**:
+
+- Ensure that the test set is properly prepared and represents the data distribution expected in real-world applications.
+- Consider evaluating the model on multiple checkpoints to identify the best-performing model over different stages of training.
+- Use a comprehensive set of metrics for evaluation, tailored to your specific problem, to get a holistic view of the model's performance.
+
+### **9. Model Inference on Custom Data**:
+
+After your model has been rigorously trained and its performance thoroughly evaluated, the next step is to deploy it for practical use — a phase known as inference. Inference is the application of your trained model to make predictions or decisions based on new, unseen data. This step is critical for realizing the model's value in real-world applications, from classifying images to making recommendations.
+
+**Performing Inference on Custom Data**
+
+To apply your model to custom data, utilize the `inference.py` script with the following command structure:
+
+```bash
+python src/inference.py ckpt_path=PATH_TO_CHECKPOINT image_path=PATH_TO_IMAGE
+```
+
+- `PATH_TO_CHECKPOINT` should be substituted with the actual path to your trained model's checkpoint. This file encapsulates the learned weights that your model will use to make predictions.
+- `PATH_TO_IMAGE` needs to be replaced with the path to the specific image file you wish to analyze with your model.
+
+
+To facilitate immediate testing of the inference capabilities of your model, the repository includes two sample images from the FashionMNIST dataset. These images are located in logs/data_check. This inclusion allows you to quickly test the model's inference process without the need for external data. To use these for inference testing, simply replace PATH_TO_IMAGE in the inference command with the path to one of these sample images.
+
+The script executes two primary actions:
+1. **Model Loading**: It begins by loading your model from the specified checkpoint. This step reconstitutes your model with all its learned parameters, readying it for prediction.
+2. **Prediction**: Next, the script processes the provided image, applying the model to generate predictions based on the learned patterns during training.
+
+**Practical Tips**:
+
+- If you're working with batches of images or data points rather than a single instance, consider modifying the `inference.py` script to handle batch processing for more efficiency.
+- Explore different model checkpoints to observe any variations in prediction outcomes. This can help identify the most stable and reliable version of your model for deployment.
+- Keep in mind the context of your application. The nature of the data and the specific requirements of your use case should guide how you approach inference, from selecting the right model to choosing the appropriate data for prediction.
+
+
 ## How to run
 
 Install dependencies
@@ -225,35 +282,8 @@ cd your-repo-name
 conda create -n myenv python=3.9
 conda activate myenv
 
-# install pytorch according to instructions
-# https://pytorch.org/get-started/
-
 # install requirements
 pip install -r requirements.txt
-```
-
-!!! Note that Python 3.11 is not supported by Hydra yet, so you need to use Python 3.10 or less. !!!
-
-Train model with default configuration
-
-```bash
-# train on CPU
-python src/train.py trainer=cpu
-
-# train on GPU
-python src/train.py trainer=gpu
-```
-
-Train model with chosen experiment configuration from [configs/experiment/](configs/experiment/)
-
-```bash
-python src/train.py experiment=experiment_name.yaml
-```
-
-You can override any parameter from command line like this
-
-```bash
-python src/train.py trainer.max_epochs=20 datamodule.batch_size=64
 ```
 
 ## Project Structure
