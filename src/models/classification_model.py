@@ -1,11 +1,15 @@
 from typing import Any, List, Union
 
 import torch
-import wandb
 from pytorch_lightning import LightningModule
 from torchmetrics import MeanMetric, Metric
 from src.utils.utils import instantiate_from_config
-from torchvision.utils import make_grid
+
+try:
+    import wandb
+    from torchvision.utils import make_grid
+except ImportError:
+    print("Wandb is not installed, image logging will not be available.")
 
 
 class ClassificationModel(LightningModule):
@@ -86,7 +90,7 @@ class ClassificationModel(LightningModule):
         self.train_loss(loss)
         self.log("train/loss", self.train_loss, prog_bar=True)
 
-        if self.logger is not None and self.global_step % self.trainer.log_every_n_steps == 0:
+        if self.should_log(batch_idx):
             self.log_confusion_matrix(batch, preds, "train")
 
         # we can return here dict with any tensors
@@ -104,7 +108,7 @@ class ClassificationModel(LightningModule):
         self.val_loss(loss)
         self.log("val/loss", self.val_loss, prog_bar=True)
 
-        if self.logger is not None and batch_idx % self.trainer.log_every_n_steps == 0:
+        if self.should_log(batch_idx):
             self.log_confusion_matrix(batch, preds, "val")
             self.log_images(batch, "val")
 
@@ -120,7 +124,7 @@ class ClassificationModel(LightningModule):
         self.test_loss(loss)
         self.log("test/loss", self.test_loss, prog_bar=True)
 
-        if self.logger is not None and batch_idx % self.trainer.log_every_n_steps == 0:
+        if self.should_log(batch_idx):
             self.log_confusion_matrix(batch, preds, "test")
             self.log_images(batch, "test")
 
@@ -162,4 +166,11 @@ class ClassificationModel(LightningModule):
                     y_true=y.cpu().numpy(), preds=preds.cpu().numpy(), class_names=self.hparams.class_names
                 )
             }
+        )
+
+    def should_log(self, batch_idx: int):
+        return (
+            self.logger is not None
+            and batch_idx % self.trainer.log_every_n_steps == 0
+            and "log_model" in self.logger.__dict__
         )
