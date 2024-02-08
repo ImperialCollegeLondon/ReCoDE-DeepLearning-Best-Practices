@@ -4,6 +4,19 @@ defaults:
   - defaults
   - net: dense_net
  
+max_images_to_log: 16
+class_names: ["T-shirt/top",
+    "Trouser",
+    "Pullover",
+    "Dress",
+    "Coat",
+    "Sandal",
+    "Shirt",
+    "Sneaker",
+    "Bag",
+    "Ankle boot"
+]
+
 criterion:
   _target_: torch.nn.CrossEntropyLoss
   _partial_: true
