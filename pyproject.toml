@@ -1,25 +1,35 @@
-[tool.pytest.ini_options]
-addopts = [
-  "--color=yes",
-  "--durations=0",
-  "--strict-markers",
-  "--doctest-modules",
-]
-filterwarnings = [
-  "ignore::DeprecationWarning",
-  "ignore::UserWarning",
-]
-log_cli = "True"
-markers = [
-  "slow: slow tests",
-]
-minversion = "6.0"
-testpaths = "tests/"
+[build-system]
+requires = ["torch==2.0.1", 
+            "torchvision==0.15.2",
+            "pytorch-lightning>=1.7.1",
+            "torchmetrics>=0.10.0",
+            "einops>=0.5.0",
+            "matplotlib==3.8.2",
+            "ipykernel==6.28.0",
+            "hydra-core==1.2.0",
+            "hydra-colorlog==1.2.0",
+            "hydra-optuna-sweeper==1.2.0",
+            "pyrootutils",
+            "pre-commit",
+            "rich",
+            "pytest"]
+build-backend = "setuptools.build_meta"
 
-[tool.coverage.report]
-exclude_lines = [
-    "pragma: nocover",
-    "raise NotImplementedError",
-    "raise NotImplementedError()",
-    "if __name__ == .__main__.:",
+[project]
+name = "dl_practice" # your package name
+version = "0.0.1" # your package version
+authors = [
+  { name="Antoni Bigata", email="ab4522@ic.ac.uk" },
 ]
+description = "A short description of your project"
+readme = "README.md"
+requires-python = ">=3.6"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/ImperialCollegeLondon/ReCoDE-DeepLearning-Best-Practices"
+Issues = "https://github.com/ImperialCollegeLondon/ReCoDE-DeepLearning-Best-Practices/issues"
