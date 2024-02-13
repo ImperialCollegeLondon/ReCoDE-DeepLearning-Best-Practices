@@ -55,6 +55,19 @@ By exploring these notebooks and tutorials, you will gain a solid foundation in 
 
 For a concise version of this tutorial, please refer to the [QuickStart.md](learning/QuickStart.md) file.
 
+### **0. Prepare the Environment**
+
+Before starting a new project, ensure that you have the necessary tools and libraries installed. This includes Python, PyTorch, PyTorch Lightning, Hydra, and Wandb. You can install these libraries using the following commands:
+
+```bash
+# Create conda environment
+conda create -n myenv python=3.9
+conda activate myenv
+
+# Install requirements
+pip install -r requirements.txt
+```
+
 ### **1. Create a New Project Based on the Template**:
 Start by using the template available at [Minimal Lightning Hydra Template](https://github.com/antonibigata/minimal-lightning-hydra-template). To create a new project from this template:
 - Navigate to the GitHub page of the template.
@@ -355,23 +368,6 @@ The `-e` flag installs the package in "editable" mode.
 - **Uninstalling**: You can uninstall your package at any time with `pip uninstall your_package_name`.
 
 By following these methods, you can easily install your Python package locally for development, testing, or personal use without the need to publish it to PyPI.
-
-## How to run
-
-Install dependencies
-
-```bash
-# clone project
-git clone https://github.com/YourGithubName/your-repo-name
-cd your-repo-name
-
-# [OPTIONAL] create conda environment
-conda create -n myenv python=3.9
-conda activate myenv
-
-# install requirements
-pip install -r requirements.txt
-```
 
 ## Project Structure
 

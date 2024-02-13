@@ -1,5 +1,15 @@
 ### Quick Start Guide for New Projects
 
+Transforming the detailed tutorial into a minimal version that retains all essential information and includes the new step on preparing the environment:
+
+#### **0. Prepare the Environment**
+- Set up your environment:
+  ```bash
+  conda create -n myenv python=3.9
+  conda activate myenv
+  pip install -r requirements.txt
+  ```
+
 #### **1. Project Initialization**
 - Use the [Minimal Lightning Hydra Template](https://github.com/antonibigata/minimal-lightning-hydra-template): Click "Use this template" on GitHub, or clone and remove `.git` for a fresh start:
   ```bash
