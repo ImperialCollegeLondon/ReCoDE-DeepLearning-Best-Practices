@@ -1,6 +1,6 @@
 ### Quick Start Guide for New Projects
 
-Transforming the detailed tutorial into a minimal version that retains all essential information and includes the new step on preparing the environment:
+![Quick Start Guide for New Projects](./Quick Start Guide for New Projects.png)
 
 #### **0. Prepare the Environment**
 - Set up your environment:
