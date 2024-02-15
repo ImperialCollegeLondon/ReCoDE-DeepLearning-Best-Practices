@@ -1,6 +1,6 @@
 ### Quick Start Guide for New Projects
 
-![Quick Start Guide for New Projects](learning/Quick_Start_Guide_for_New_Projects.png "Quick_Start_Guide_for_New_Projects")
+![Quick Start Guide for New Projects](./Quick_Start_Guide_for_New_Projects.png)
 
 #### **0. Prepare the Environment**
 - Set up your environment:
