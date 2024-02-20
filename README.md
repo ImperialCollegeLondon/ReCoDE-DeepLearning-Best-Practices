@@ -387,6 +387,21 @@ The `-e` flag installs the package in "editable" mode.
 
 By following these methods, you can easily install your Python package locally for development, testing, or personal use without the need to publish it to PyPI.
 
+## Further Learning
+
+This project is designed to provide a comprehensive understanding of best practices in deep learning, incorporating the use of PyTorch, PyTorch Lightning, Hydra, and other essential tools. However, the field of deep learning is vast and constantly evolving. To continue your learning journey, I recommend exploring the following resources:
+
+- **[Deep Learning Tuning Playbook](https://github.com/google-research/tuning_playbook?tab=readme-ov-file#why-a-tuning-playbook)**: A detailed guide focused on maximizing the performance of deep learning models. It covers aspects of deep learning training such as pipeline implementation, optimization, and hyperparameter tuning.
+
+- **[PyTorch Performance Tuning](https://pytorch.org/tutorials/recipes/recipes/tuning_guide.html)**: This resource provides a set of optimizations and best practices that can accelerate the training and inference of deep learning models in PyTorch. I also recommend exploring the official [PyTorch documentation](https://pytorch.org/tutorials/), which is a rich source of tutorials, guides, and examples.
+
+- **[Lightning Training Tricks](https://lightning.ai/docs/pytorch/stable/advanced/training_tricks.html)**: PyTorch Lightning implements various techniques to aid in training, making the process more efficient and smoother.
+
+- **[Scientific Software Best Practices](https://github.com/ImperialCollegeLondon/ReCoDE_MCMCFF)**: This exemplar project showcases best practices in developing scientific software, offering insights into structured project management.
+
+- **Further Tools**: The deep learning ecosystem includes many other tools and libraries that can enhance your projects. For instance, [Fire](https://github.com/google/python-fire) for automatically generating command line interfaces, [DeepSpeed](https://github.com/microsoft/DeepSpeed) for efficient distributed training and inference, and [Optuna](https://optuna.org/) for advanced hyperparameter optimization.
+
+
 ## Project Structure
 
 The directory structure of new project looks like this:
