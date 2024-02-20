@@ -1,4 +1,4 @@
-## Best Practices
+# Additional Best Practices
 
 <details>
 <summary><b>Use Miniconda</b></summary>

@@ -1,4 +1,4 @@
-## ⚡  Your Superpowers
+# Learn Template Tricks
 
 <details>
 <summary><b>Override any config parameter from command line</b></summary>

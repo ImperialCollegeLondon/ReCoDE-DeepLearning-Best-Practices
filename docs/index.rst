@@ -7,8 +7,17 @@ Welcome to ReCoDE-DeepLearning-Best-Practices's documentation!
 ==============================================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
+
+   learning/QuickStart.md
+   learning/Learning_about_lightning
+   learning/Learning_about_hydra
+   learning/Learning_about_einops
+   learning/Starting_a_new_project.md
+   learning/Instal_as_package.md
+   learning/Learn_template_tricks.md
+   learning/Additional_Best_Practices.md
 
 
 
