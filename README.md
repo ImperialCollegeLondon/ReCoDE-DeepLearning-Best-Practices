@@ -38,9 +38,9 @@ This project aims to showcase best practices and tools essential for initiating 
 
 To help you become acquainted with the key libraries used in this project, I have prepared learning notebooks that cover the basics of each. These interactive notebooks are an excellent way to get hands-on experience. You can find them in the [learning](learning) folder. The notebooks are designed to introduce you to the core concepts and functionalities of each library:
 
-- **[Pytorch Lightning](learning/Learning_about_lightning.ipynb)**: This notebook introduces Pytorch Lightning, a library that simplifies the training process of PyTorch models. It covers basic concepts like creating models, training loops, and leveraging Lightning's built-in functionalities for more efficient training.
-- **[Hydra](learning/Learning_about_hydra.ipynb)**: Hydra is a framework for elegantly configuring complex applications. This notebook will guide you through its configuration management capabilities, demonstrating how to streamline your project's settings and parameters.
-- **[Einops](learning/Learning_about_einops.ipynb)**: Einops is a library for tensor operations and manipulation. Learn how to use Einops for more readable and maintainable tensor transformations in this notebook.
+- **[Pytorch Lightning](docs/learning/Learning_about_lightning.ipynb)**: This notebook introduces Pytorch Lightning, a library that simplifies the training process of PyTorch models. It covers basic concepts like creating models, training loops, and leveraging Lightning's built-in functionalities for more efficient training.
+- **[Hydra](docs/learning/Learning_about_hydra.ipynb)**: Hydra is a framework for elegantly configuring complex applications. This notebook will guide you through its configuration management capabilities, demonstrating how to streamline your project's settings and parameters.
+- **[Einops](docs/learning/Learning_about_einops.ipynb)**: Einops is a library for tensor operations and manipulation. Learn how to use Einops for more readable and maintainable tensor transformations in this notebook.
 
 For a more comprehensive understanding, I also recommend the following tutorials. They provide in-depth knowledge and are great resources for both beginners and experienced users:
 
@@ -53,7 +53,7 @@ By exploring these notebooks and tutorials, you will gain a solid foundation in 
 
 ## Steps When Starting a New Project
 
-For a concise version of this tutorial, please refer to the [QuickStart.md](learning/QuickStart.md) file.
+For a concise version of this tutorial, please refer to the [QuickStart.md](docs/learning/QuickStart.md) file.
 
 ### **0. Prepare the Environment**
 
