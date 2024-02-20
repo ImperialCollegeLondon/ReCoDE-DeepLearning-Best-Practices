@@ -14,37 +14,25 @@
 
 This project aims to showcase best practices and tools essential for initiating a successful deep learning project. It will cover the use of configuration files for project settings management, adopting a modular code architecture, and utilizing frameworks like Hydra for efficient configuration. The project will also focus on effective result logging and employing templates for project structuring, aiding in maintainability, scalability, and collaborative ease.
 
-## Learning outcomes (temporary)
+## Learning outcomes 
 
- - Using wandb to log training metrics and Images
- - Using hydra to manage configurations
- - Using pytorch lightning to train models
- - Einops for easy tensor manipulation
- - Learning to start training on GPU (CUDA_VISIBLE_DEVICES)
- - Using a template to start project (https://github.com/antonibigata/minimal-lightning-hydra-template)
+1. **Using Wandb to Log Training Metrics and Images**
+   - Master the integration of Wandb (Weights & Biases) into your project for comprehensive logging of training metrics and images. This includes setting up Wandb, configuring it for your project, and utilizing its powerful dashboard for real-time monitoring and analysis of model performance.
 
-## Steps (temporary)
-I think the best approch would be to create own github project based on instructions of this one.
+2. **Using Hydra to Manage Configurations**
+   - Learn to leverage Hydra for advanced configuration management in your projects. Understand how to define, organize, and override configurations dynamically, enabling flexible experimentation and streamlined management of complex projects.
 
- 1. Read about the template and how to use it for new project.
- 2. Create a new project based on the template.
- 3. Read about hydra and how to use it for configuration management.
- 4. Read about pytorch lightning and how to use it for training.
- 5. Start by creating a datamodule and dataset file with corresponding config.
- 6. Test it.
- 7. Create model + configuration.
- 8. Test it.
- (8.5 Read about einops and reimplement part of forward computation)
- 9. Create trainer + configuration.
- 10. Try a debug run.
- 11. Learn how to use wandb for logging.
- 12. Start a training run.
- 13. Get results on wandb.
- 14. Improve model.
- 15. Start a new training run with new model via command line.
- 16. Use model for inference on custom data.
- 17. Use project as a python package.
- 18. Give ressources for further best practices (Compiling, optimizing training loop, Fire package, etc)
+3. **Using PyTorch Lightning to Train Models**
+   - Gain expertise in using PyTorch Lightning to simplify the training of machine learning models. This includes setting up models, training loops, validation, testing, and leveraging PyTorch Lightning's abstractions for cleaner, more maintainable code.
+
+4. **Einops for Easy Tensor Manipulation**
+   - Acquire the skills to use Einops for intuitive and efficient tensor operations, enhancing the readability and scalability of your data manipulation code. Learn to apply Einops for reshaping, repeating, and rearranging tensors in a more understandable way.
+
+5. **Learning to Start Training on GPU**
+   - Understand how to utilize GPUs for training your models. This outcome covers the basics of GPU acceleration, including how to select and allocate GPU resources for your training jobs to improve computational efficiency.
+
+6. **Using a Template to Start Project**
+   - Familiarize yourself with starting new projects using a predefined template, specifically the [Minimal Lightning Hydra Template](https://github.com/antonibigata/minimal-lightning-hydra-template). Learn the benefits of using templates for project initialization, including predefined directory structures, configuration files, and sample code to kickstart your development process.
 
 ## Getting Familiar with the Libraries
 
@@ -64,6 +52,34 @@ For a more comprehensive understanding, I also recommend the following tutorials
 By exploring these notebooks and tutorials, you will gain a solid foundation in these libraries, which are integral to the project's development.
 
 ## Steps When Starting a New Project
+
+For a concise version of this tutorial, please refer to the [QuickStart.md](learning/QuickStart.md) file.
+
+### **0. Prepare the Environment**
+
+Before starting a new project, ensure that you have the necessary tools and libraries installed. This includes Python, PyTorch, PyTorch Lightning, Hydra, and Wandb. You can install these libraries using the following commands:
+
+#### Via Conda
+
+```bash
+# Create conda environment
+conda create -n myenv python=3.9
+conda activate myenv
+
+# Install requirements
+pip install -r requirements.txt
+```
+
+#### Via Venv
+
+```bash
+# Create virtual environment
+python -m venv myenv
+source myenv/bin/activate
+
+# Install requirements
+pip install -r requirements.txt
+```
 
 ### **1. Create a New Project Based on the Template**:
 Start by using the template available at [Minimal Lightning Hydra Template](https://github.com/antonibigata/minimal-lightning-hydra-template). To create a new project from this template:
@@ -267,23 +283,109 @@ The script executes two primary actions:
 - Explore different model checkpoints to observe any variations in prediction outcomes. This can help identify the most stable and reliable version of your model for deployment.
 - Keep in mind the context of your application. The nature of the data and the specific requirements of your use case should guide how you approach inference, from selecting the right model to choosing the appropriate data for prediction.
 
+## Instal Repository as a Package (Optional)
 
-## How to run
+Creating a Python package involves organizing your code into a structured format that can be easily distributed and installed. Utilizing `pyproject.toml` is a modern approach that specifies build system requirements for Python projects. Here's a small tutorial on how to transform the given repository into a Python package using `pyproject.toml`.
 
-Install dependencies
+This is a minimal example of how to create a Python package. You can find more details at the [Python Packaging User Guide](https://packaging.python.org/en/latest/tutorials/packaging-projects/) or using this [template](https://github.com/ImperialCollegeLondon/pip-tools-template).
+
+### Step 1: Organize Your Code
+
+First, ensure your project has a suitable structure. A typical package structure looks like this:
+
+```
+your_project_name/
+│
+├── src/
+│   └── your_package_name/
+│       ├── __init__.py
+│       ├── module1.py
+│       └── module2.py
+│
+├── tests/
+│   ├── __init__.py
+│   ├── test_module1.py
+│   └── test_module2.py
+│
+├── pyproject.toml
+└── README.md
+```
+
+- `your_project_name/` is the root directory.
+- `src/` contains all your source files. It's a good practice to keep your package code inside a `src/` directory to avoid import issues.
+- `your_package_name/` is the directory that will be the actual Python package.
+- `tests/` contains your unit tests.
+- `pyproject.toml` will contain your package metadata and build requirements.
+
+As you see the current structure needs to be slightly modified to fit the package structure. The only change is to move everything from the `src` folder to `src/your_package_name`. This is the only change needed to make the project a package.
+
+### Step 2: Create the `pyproject.toml` File
+
+The `pyproject.toml` file is a configuration file to define your package metadata and build system requirements. Explanation of the file can be found [here](https://packaging.python.org/en/latest/guides/writing-pyproject-toml/).
+
+### Step 3: Add an `__init__.py` File
+
+Inside your package directory (`src/your_package_name/`), make sure there's an `__init__.py` file. This file can be empty, but its presence indicates to Python that this directory should be treated as a package.
+
+### Step 4: Build Your Package
+
+With your code properly organized and your `pyproject.toml` in place, you can now build your package. First, ensure you have the required tools installed:
 
 ```bash
-# clone project
-git clone https://github.com/YourGithubName/your-repo-name
-cd your-repo-name
-
-# [OPTIONAL] create conda environment
-conda create -n myenv python=3.9
-conda activate myenv
-
-# install requirements
-pip install -r requirements.txt
+pip install setuptools wheel
 ```
+
+Navigate to your project root directory and run:
+
+```bash
+python -m build
+```
+
+This command generates distribution files in the `dist/` directory.
+
+### Step 5: Publish Your Package (Optional)
+
+If you want to upload your package to the Python Package Index, the first thing you’ll need to do is register an account on TestPyPI, which is a separate instance of the package index intended for testing and experimentation. It’s great for things like this tutorial where we don’t necessarily want to upload to the real index. To register an account, go to https://test.pypi.org/account/register/ and complete the steps on that page. You will also need to verify your email address before you’re able to upload any packages. For more details, see Using [TestPyPI](https://packaging.python.org/en/latest/guides/using-testpypi/).
+
+To securely upload your project, you’ll need a PyPI [API token](https://test.pypi.org/help/#apitoken). Create one at https://test.pypi.org/manage/account/#api-tokens, setting the “Scope” to “Entire account”. Don’t close the page until you have copied and saved the token — you won’t see that token again.
+
+Now that you are registered, you can use [twine](https://packaging.python.org/en/latest/key_projects/#twine) to upload the distribution packages. You’ll need to install Twine:
+
+```bash
+pip install twine
+```
+
+Then, upload your package by running:
+
+```bash
+twine upload dist/*
+```
+
+You'll need a PyPI account and to follow the prompts to authenticate.
+
+### Step 6: Install Your Package
+
+It's useful for development and testing purposes. Navigate to the root directory of your project (where `setup.py` or `pyproject.toml` is located) and run:
+
+```bash
+pip install .
+```
+
+Or if you're actively developing the package and want changes in the package to be immediately reflected without needing to reinstall, use:
+
+```bash
+pip install -e .
+```
+
+The `-e` flag installs the package in "editable" mode.
+
+### Additional Considerations
+
+- **Dependencies**: If your package has dependencies listed in `pyproject.toml`, they will be automatically installed by `pip` during the installation process.
+- **Virtual Environment**: It's a good practice to install your package in a virtual environment to avoid conflicts with system-wide packages. You can create a virtual environment using `python -m venv env` and activate it with `source env/bin/activate` (on Unix/macOS) or `env\Scripts\activate` (on Windows).
+- **Uninstalling**: You can uninstall your package at any time with `pip uninstall your_package_name`.
+
+By following these methods, you can easily install your Python package locally for development, testing, or personal use without the need to publish it to PyPI.
 
 ## Project Structure
 
