@@ -295,7 +295,12 @@ def unflatten_wandb_config(dictionary):
         for part in parts[:-1]:
             if part not in d:
                 d[part] = dict()
-            d = d[part]
+            try:
+                d = d[part]
+            except TypeError as e:
+                print(f"Error: {key}, {value}")
+                print(part)
+                raise e
         if isinstance(value, dict):
             value = value["value"]
         d[parts[-1]] = value
@@ -363,7 +368,10 @@ def configure_cfg_from_checkpoint(cfg):
     if cfg.get("config_path"):
         with open(cfg.get("config_path"), "r") as stream:
             config = yaml.safe_load(stream)
-        unflatten_config = unflatten_wandb_config(config)
+        try:
+            unflatten_config = unflatten_wandb_config(config)
+        except Exception:
+            return cfg
         # update net config with config from checkpoint
         print("Updating model config.................")
         config = unflatten_config["model"]["net"]

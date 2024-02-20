@@ -10,10 +10,11 @@ defaults:
   - extras: default
   - hydra: default
 
-task_name: "eval"
+task_name: "generate"
 
 tags: ["dev"]
 
 # passing checkpoint path is necessary for evaluation
 ckpt_path: null
 config_path: null
+image_path: null

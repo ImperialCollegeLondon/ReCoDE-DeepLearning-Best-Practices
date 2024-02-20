@@ -95,21 +95,7 @@ def evaluate(cfg: DictConfig) -> Tuple[dict, dict]:
         utils.log_hyperparameters(object_dict)
 
     log.info("Starting testing!")
-    if cfg.load_separetely:
-        net = hydra.utils.instantiate(cfg.model.net)
-
-        net = load_checkpoint(
-            net,
-            cfg.ckpt_path,
-            allow_extra_keys=True,
-            extra_key="state_dict",
-            replace=("model.", ""),
-            map_location="cuda",
-        )
-        model.update_inf_model(net.to("cuda"))
-        trainer.test(model=model, datamodule=datamodule)
-    else:
-        trainer.test(model=model, datamodule=datamodule, ckpt_path=cfg.ckpt_path)
+    trainer.test(model=model, datamodule=datamodule, ckpt_path=cfg.ckpt_path)
 
     # for predictions use trainer.predict(...)
     # predictions = trainer.predict(model=model, dataloaders=dataloaders, ckpt_path=cfg.ckpt_path)

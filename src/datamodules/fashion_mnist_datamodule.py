@@ -58,7 +58,7 @@ class FashionMNISTDataModule(LightningDataModule):
 
         self.data_train: Optional[Dataset] = None
         self.data_val: Optional[Dataset] = None
-        # self.data_test: Optional[Dataset] = None # Uncomment if you have a test dataset
+        # self.data_test: Optional[Dataset] = None  # Uncomment if you have a test dataset
 
     def prepare_data(self):
         # Download the data (if not already present)
@@ -90,30 +90,30 @@ class FashionMNISTDataModule(LightningDataModule):
         )
 
     def val_dataloader(self):
-        if self.data_val:
-            return DataLoader(
-                dataset=self.data_val,
-                batch_size=self.hparams.batch_size,
-                num_workers=self.hparams.num_workers,
-                pin_memory=self.hparams.pin_memory,
-                persistent_workers=self.hparams.persistent_workers,
-                shuffle=False,
-            )
-        else:
+        if not self.data_val:
             return None
 
-    # def test_dataloader(self):
-    #     if self.data_test:
-    #         return DataLoader(
-    #             dataset=self.data_test,
-    #             batch_size=self.hparams.batch_size,
-    #             num_workers=self.hparams.num_workers,
-    #             pin_memory=self.hparams.pin_memory,
-    #             persistent_workers=self.hparams.persistent_workers,
-    #             shuffle=False,
-    #         )
-    #     else:
-    #         return None
+        return DataLoader(
+            dataset=self.data_val,
+            batch_size=self.hparams.batch_size,
+            num_workers=self.hparams.num_workers,
+            pin_memory=self.hparams.pin_memory,
+            persistent_workers=self.hparams.persistent_workers,
+            shuffle=False,
+        )
+
+    def test_dataloader(self):
+        if not self.data_val:
+            return None
+
+        return DataLoader(
+            dataset=self.data_val,
+            batch_size=self.hparams.batch_size,
+            num_workers=self.hparams.num_workers,
+            pin_memory=self.hparams.pin_memory,
+            persistent_workers=self.hparams.persistent_workers,
+            shuffle=False,
+        )
 
 
 if __name__ == "__main__":
