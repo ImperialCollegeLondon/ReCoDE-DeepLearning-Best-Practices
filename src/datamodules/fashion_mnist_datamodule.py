@@ -90,30 +90,30 @@ class FashionMNISTDataModule(LightningDataModule):
         )
 
     def val_dataloader(self):
-        if self.data_val:
-            return DataLoader(
-                dataset=self.data_val,
-                batch_size=self.hparams.batch_size,
-                num_workers=self.hparams.num_workers,
-                pin_memory=self.hparams.pin_memory,
-                persistent_workers=self.hparams.persistent_workers,
-                shuffle=False,
-            )
-        else:
+        if not self.data_val:
             return None
 
+        return DataLoader(
+            dataset=self.data_val,
+            batch_size=self.hparams.batch_size,
+            num_workers=self.hparams.num_workers,
+            pin_memory=self.hparams.pin_memory,
+            persistent_workers=self.hparams.persistent_workers,
+            shuffle=False,
+        )
+
     def test_dataloader(self):
-        if self.data_val:
-            return DataLoader(
-                dataset=self.data_val,
-                batch_size=self.hparams.batch_size,
-                num_workers=self.hparams.num_workers,
-                pin_memory=self.hparams.pin_memory,
-                persistent_workers=self.hparams.persistent_workers,
-                shuffle=False,
-            )
-        else:
+        if not self.data_val:
             return None
+
+        return DataLoader(
+            dataset=self.data_val,
+            batch_size=self.hparams.batch_size,
+            num_workers=self.hparams.num_workers,
+            pin_memory=self.hparams.pin_memory,
+            persistent_workers=self.hparams.persistent_workers,
+            shuffle=False,
+        )
 
 
 if __name__ == "__main__":

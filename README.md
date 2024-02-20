@@ -258,8 +258,7 @@ python src/inference.py ckpt_path=PATH_TO_CHECKPOINT image_path=PATH_TO_IMAGE
 - `PATH_TO_CHECKPOINT` should be substituted with the actual path to your trained model's checkpoint. This file encapsulates the learned weights that your model will use to make predictions.
 - `PATH_TO_IMAGE` needs to be replaced with the path to the specific image file you wish to analyze with your model.
 
-
-To facilitate immediate testing of the inference capabilities of your model, the repository includes two sample images from the FashionMNIST dataset. These images are located in logs/data_check. This inclusion allows you to quickly test the model's inference process without the need for external data. To use these for inference testing, simply replace PATH_TO_IMAGE in the inference command with the path to one of these sample images.
+In this particular project, the inference script is designed to work with the FashionMNIST dataset so the image needs to be a FashionMNIST image (i.e 28x28 black and white image). However, you can easily modify the script to work with your own custom data. To facilitate immediate testing of the inference capabilities of your model, the repository includes two sample images from the FashionMNIST dataset. These images are located in logs/data_check. This inclusion allows you to quickly test the model's inference process without the need for external data. To use these for inference testing, simply replace PATH_TO_IMAGE in the inference command with the path to one of these sample images.
 
 The script executes two primary actions:
 1. **Model Loading**: It begins by loading your model from the specified checkpoint. This step reconstitutes your model with all its learned parameters, readying it for prediction.
