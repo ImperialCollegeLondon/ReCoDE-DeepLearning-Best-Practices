@@ -1,18 +1,5 @@
 [build-system]
-requires = ["torch==2.0.1", 
-            "torchvision==0.15.2",
-            "pytorch-lightning>=1.7.1",
-            "torchmetrics>=0.10.0",
-            "einops>=0.5.0",
-            "matplotlib==3.8.2",
-            "ipykernel==6.28.0",
-            "hydra-core==1.2.0",
-            "hydra-colorlog==1.2.0",
-            "hydra-optuna-sweeper==1.2.0",
-            "pyrootutils",
-            "pre-commit",
-            "rich",
-            "pytest"]
+requires = ["setuptools", "setuptools_scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -40,7 +27,7 @@ dependencies = [
     "hydra-colorlog==1.2.0",
     "hydra-optuna-sweeper==1.2.0",
     "pyrootutils",
-    "rich",   # <- I don't know what this is for
+    "rich",
 ]
 
 [project.optional-dependencies]

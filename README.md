@@ -59,10 +59,23 @@ For a concise version of this tutorial, please refer to the [QuickStart.md](lear
 
 Before starting a new project, ensure that you have the necessary tools and libraries installed. This includes Python, PyTorch, PyTorch Lightning, Hydra, and Wandb. You can install these libraries using the following commands:
 
+#### Via Conda
+
 ```bash
 # Create conda environment
 conda create -n myenv python=3.9
 conda activate myenv
+
+# Install requirements
+pip install -r requirements.txt
+```
+
+#### Via Venv
+
+```bash
+# Create virtual environment
+python -m venv myenv
+source myenv/bin/activate
 
 # Install requirements
 pip install -r requirements.txt
@@ -274,6 +287,8 @@ The script executes two primary actions:
 
 Creating a Python package involves organizing your code into a structured format that can be easily distributed and installed. Utilizing `pyproject.toml` is a modern approach that specifies build system requirements for Python projects. Here's a small tutorial on how to transform the given repository into a Python package using `pyproject.toml`.
 
+This is a minimal example of how to create a Python package. You can find more details at the [Python Packaging User Guide](https://packaging.python.org/en/latest/tutorials/packaging-projects/) or using this [template](https://github.com/ImperialCollegeLondon/pip-tools-template).
+
 ### Step 1: Organize Your Code
 
 First, ensure your project has a suitable structure. A typical package structure looks like this:
@@ -306,7 +321,7 @@ As you see the current structure needs to be slightly modified to fit the packag
 
 ### Step 2: Create the `pyproject.toml` File
 
-The `pyproject.toml` file is a configuration file to define your package metadata and build system requirements.
+The `pyproject.toml` file is a configuration file to define your package metadata and build system requirements. Explanation of the file can be found [here](https://packaging.python.org/en/latest/guides/writing-pyproject-toml/).
 
 ### Step 3: Add an `__init__.py` File
 
@@ -330,7 +345,11 @@ This command generates distribution files in the `dist/` directory.
 
 ### Step 5: Publish Your Package (Optional)
 
-If you want to share your package via PyPI (Python Package Index), first ensure you have `twine` installed:
+If you want to upload your package to the Python Package Index, the first thing you’ll need to do is register an account on TestPyPI, which is a separate instance of the package index intended for testing and experimentation. It’s great for things like this tutorial where we don’t necessarily want to upload to the real index. To register an account, go to https://test.pypi.org/account/register/ and complete the steps on that page. You will also need to verify your email address before you’re able to upload any packages. For more details, see Using [TestPyPI](https://packaging.python.org/en/latest/guides/using-testpypi/).
+
+To securely upload your project, you’ll need a PyPI [API token](https://test.pypi.org/help/#apitoken). Create one at https://test.pypi.org/manage/account/#api-tokens, setting the “Scope” to “Entire account”. Don’t close the page until you have copied and saved the token — you won’t see that token again.
+
+Now that you are registered, you can use [twine](https://packaging.python.org/en/latest/key_projects/#twine) to upload the distribution packages. You’ll need to install Twine:
 
 ```bash
 pip install twine
