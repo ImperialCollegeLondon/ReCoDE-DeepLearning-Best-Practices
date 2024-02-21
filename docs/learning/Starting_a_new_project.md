@@ -29,7 +29,10 @@ pip install -r requirements.txt
 ```
 
 ## **1. Create a New Project Based on the Template**:
-Start by using the template available at [Minimal Lightning Hydra Template](https://github.com/antonibigata/minimal-lightning-hydra-template). To create a new project from this template:
+
+To start a new project, it's beneficial to use a template that provides a structured foundation for your work. This template should include a well-organized directory structure, essential configuration files, and a set of example components, such as datamodules, models, and training scripts. This approach streamlines the project setup process and ensures that you adhere to best practices from the outset.
+
+You can start by using the template available at [Minimal Lightning Hydra Template](https://github.com/antonibigata/minimal-lightning-hydra-template). To create a new project from this template:
 - Navigate to the GitHub page of the template.
 - Click on the "Use this template" button, located in the top right corner.
 - Follow the on-screen instructions to create a new repository based on this template.
@@ -41,6 +44,13 @@ cd your-project-name
 rm -rf .git
 ```
 This will clone the repository and remove its git history, allowing you to start a fresh project.
+
+Alternatively, if you just want to follow along with this tutorial, you can just clone this repository and follow the instructions.
+
+```bash
+git clone https://github.com/ImperialCollegeLondon/ReCoDE-DeepLearning-Best-Practices.git
+cd ReCoDE-DeepLearning-Best-Practices
+```
 
 ## **2. Create a Datamodule and Dataset File with Corresponding Configuration**:
 Data manipulation code should be organized in `src/datamodules`. Key components include:
