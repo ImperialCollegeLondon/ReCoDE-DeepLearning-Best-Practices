@@ -3,6 +3,17 @@ from einops import rearrange
 
 
 class ConvNet(nn.Module):
+    """
+    Convolutional Neural Network class that extends nn.Module.
+
+    Args:
+        in_channels (int): Number of input channels.
+        channel_sizes (list): List of integers representing the number of channels in each layer.
+        output_size (int): Number of output classes.
+        hidden_size (int): Number of hidden units in the fully connected layer.
+
+    """
+
     def __init__(self, in_channels=1, channel_sizes=[16, 32, 64], output_size=10, hidden_size=64):
         super(ConvNet, self).__init__()
 
@@ -29,6 +40,15 @@ class ConvNet(nn.Module):
         self.fc2 = nn.Linear(hidden_size, output_size)
 
     def forward(self, x):
+        """
+        Define the forward pass of the ConvNet.
+
+        Args:
+            x (torch.Tensor): Input tensor.
+
+        Returns:
+            x (torch.Tensor): Output tensor.
+        """
         for i in range(self.num_layers):
             x = self.conv_layers[i](x)
             x = self.relu_layers[i](x)

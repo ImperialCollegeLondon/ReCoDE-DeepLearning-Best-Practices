@@ -24,6 +24,12 @@ FPS = 25
 
 
 def inference(cfg: DictConfig):
+    """
+    Perform inference on a single image.
+
+    Args:
+        cfg (DictConfig): Configuration object.
+    """
     assert cfg.ckpt_path, "cfg.ckpt_path is required"
     assert cfg.image_path, "cfg.image_path is required"
 
@@ -37,8 +43,8 @@ def inference(cfg: DictConfig):
         net,
         cfg.ckpt_path,
         allow_extra_keys=True,
-        extra_key="state_dict",
-        replace=("net.", ""),
+        extra_key="state_dict",  # Look for state_dict key in the checkpoint
+        replace=("net.", ""),  # Remove "net." from the keys
         map_location="cuda",
     )
     model = hydra.utils.instantiate(cfg.model).cuda()
@@ -52,6 +58,7 @@ def inference(cfg: DictConfig):
 
     # Process image
     pil_image = Image.open(cfg.image_path)
+    # Convert to tensor and resize to 28x28 (MNIST image size)
     to_tensor = transforms.Compose([transforms.ToTensor(), transforms.Resize((28, 28), antialias=True)])
     image = to_tensor(pil_image).cuda()
 
@@ -67,6 +74,12 @@ def inference(cfg: DictConfig):
 
 @hydra.main(version_base="1.2", config_path=root / "configs", config_name="inference.yaml")
 def main(cfg: DictConfig) -> None:
+    """
+    Main function to perform inference.
+
+    Args:
+        cfg (DictConfig): Configuration object.
+    """
     inference(cfg)
 
 

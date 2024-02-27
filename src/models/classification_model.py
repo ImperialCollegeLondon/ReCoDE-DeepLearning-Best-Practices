@@ -37,6 +37,18 @@ class ClassificationModel(LightningModule):
         max_images_to_log: int = 16,
         class_names: List[str] = None,
     ):
+        """
+        Initialize ClassificationModel.
+
+        Args:
+            net (torch.nn.Module): The neural network model.
+            optimizer (torch.optim.Optimizer): The optimizer.
+            scheduler (torch.optim.lr_scheduler): The learning rate scheduler.
+            criterion (torch.nn.Module): The loss function.
+            metrics (List[Union[Metric, Metric]]): List of metrics.
+            max_images_to_log (int): Maximum number of images to log. Default is 16.
+            class_names (List[str]): List of class names. Default is None.
+        """
         super().__init__()
 
         # this line allows to access init params with 'self.hparams' attribute
@@ -71,9 +83,27 @@ class ClassificationModel(LightningModule):
         self.test_loss = MeanMetric()
 
     def forward(self, x: torch.Tensor):
+        """
+        Define the forward pass of the ClassificationModel.
+
+        Args:
+            x (torch.Tensor): Input tensor.
+
+        Returns:
+            torch.Tensor: Output tensor.
+        """
         return self.net(x)
 
     def step(self, batch: Any):
+        """
+        Define a normal step for the ClassificationModel.
+
+        Args:
+            batch (Any): Input batch that contains input and target.
+
+        Returns:
+            tuple: Tuple containing loss, predictions, and targets.
+        """
         x, y = batch
         logits = self.forward(x)
         loss = self.criterion(logits, y)
@@ -81,6 +111,16 @@ class ClassificationModel(LightningModule):
         return loss, preds, y
 
     def training_step(self, batch: Any, batch_idx: int):
+        """
+        Define a training step for the ClassificationModel.
+
+        Args:
+            batch (Any): Input batch.
+            batch_idx (int): Index of the batch.
+
+        Returns:
+            dict: Dictionary containing at least loss
+        """
         loss, preds, targets = self.step(batch)
 
         # update and log metrics
@@ -99,6 +139,16 @@ class ClassificationModel(LightningModule):
         return {"loss": loss, "preds": preds, "targets": targets}
 
     def validation_step(self, batch: Any, batch_idx: int):
+        """
+        Define a validation step for the ClassificationModel.
+
+        Args:
+            batch (Any): Input batch.
+            batch_idx (int): Index of the batch.
+
+        Returns:
+            dict: Dictionary containing at least loss
+        """
         loss, preds, targets = self.step(batch)
 
         # update and log metrics
@@ -115,6 +165,16 @@ class ClassificationModel(LightningModule):
         return {"loss": loss, "preds": preds, "targets": targets}
 
     def test_step(self, batch: Any, batch_idx: int):
+        """
+        Define a test step for the ClassificationModel.
+
+        Args:
+            batch (Any): Input batch.
+            batch_idx (int): Index of the batch.
+
+        Returns:
+            dict: Dictionary containing at least loss
+        """
         loss, preds, targets = self.step(batch)
 
         # update and log metrics
@@ -152,13 +212,29 @@ class ClassificationModel(LightningModule):
         return {"optimizer": optimizer}
 
     def log_images(self, batch: torch.Tensor, prefix: str):
+        """
+        Log images to the logger.
+        Only works for wandb logger.
+
+        Args:
+            batch (torch.Tensor): Input batch.
+            prefix (str): Prefix for the log key.
+        """
         x, _ = batch  # B, C, H, W
-        x = x[: self.hparams.max_images_to_log]
+        x = x[: self.hparams.max_images_to_log]  # Log only the first 'max_images_to_log' images
         grid = make_grid(x, nrow=4).permute(1, 2, 0)  # C, H, W -> H, W, C
-        grid = (grid * 255).cpu().numpy().astype("uint8")
-        self.logger.experiment.log({f"{prefix}/Sample images": wandb.Image(grid)})
+        grid = (grid * 255).cpu().numpy().astype("uint8")  # Convert to numpy array for logging
+        self.logger.experiment.log({f"{prefix}/Sample images": wandb.Image(grid)})  # Log images
 
     def log_confusion_matrix(self, batch: torch.Tensor, preds: torch.Tensor, prefix: str):
+        """
+        Log confusion matrix to the logger.
+
+        Args:
+            batch (torch.Tensor): Input batch.
+            preds (torch.Tensor): Predictions.
+            prefix (str): Prefix for the log key.
+        """
         _, y = batch
         self.logger.experiment.log(
             {
@@ -169,6 +245,15 @@ class ClassificationModel(LightningModule):
         )
 
     def should_log(self, batch_idx: int):
+        """
+        Determine whether to log based on the batch index, if the logger is wandb.
+
+        Args:
+            batch_idx (int): Index of the batch.
+
+        Returns:
+            bool: Whether to log.
+        """
         return (
             self.logger is not None
             and batch_idx % self.trainer.log_every_n_steps == 0

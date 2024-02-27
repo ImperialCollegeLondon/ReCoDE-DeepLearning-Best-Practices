@@ -109,7 +109,6 @@ The directory structure of new project looks like this:
 ├── src                    <- Source code
 │   ├── data                     <- Data scripts
 │   ├── models                   <- Model scripts
-│   ├── optimizers               <- Optimizers scripts
 │   ├── utils                    <- Utility scripts
 │   │
 │   ├── eval.py                  <- Run evaluation

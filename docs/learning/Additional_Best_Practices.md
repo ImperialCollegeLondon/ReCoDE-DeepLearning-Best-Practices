@@ -165,7 +165,7 @@ The style guide is available [here](https://pytorch-lightning.readthedocs.io/en/
 
 Tmux is a terminal multiplexer, which allows you to run multiple terminal sessions in a single window. It's especially useful when you want to run your training script on a remote server and you want to keep it running even after you close the ssh connection.
 
-More about tmux can be found [here](https://hamvocke.com/blog/a-quick-and-easy-guide-to-tmux/).
+More about tmux can be found <a href="https://hamvocke.com/blog/a-quick-and-easy-guide-to-tmux/">here</a>.
 </details>
 
 <details>
