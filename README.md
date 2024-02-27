@@ -79,7 +79,7 @@ The directory structure of new project looks like this:
 │
 ├── configs                   <- Hydra configs
 │   ├── callbacks                <- Callbacks configs
-│   ├── data                     <- Data configs
+│   ├── datamodule               <- Data configs
 │   ├── debug                    <- Debugging configs
 │   ├── experiment               <- Experiment configs
 │   ├── extras                   <- Extra utilities configs
@@ -93,6 +93,7 @@ The directory structure of new project looks like this:
 │   │
 │   ├── eval.yaml             <- Main config for evaluation
 │   └── train.yaml            <- Main config for training
+│   └── inference.yaml        <- Main config for inference
 │
 ├── data                   <- Project data
 │
@@ -107,10 +108,12 @@ The directory structure of new project looks like this:
 ├── src                    <- Source code
 │   ├── data                     <- Data scripts
 │   ├── models                   <- Model scripts
+│   ├── optimizers               <- Optimizers scripts
 │   ├── utils                    <- Utility scripts
 │   │
 │   ├── eval.py                  <- Run evaluation
 │   └── train.py                 <- Run training
+│   └── inference.py             <- Run inference
 │
 ├── tests                  <- Tests of any kind
 │
@@ -120,13 +123,12 @@ The directory structure of new project looks like this:
 ├── .project-root             <- File for inferring the position of project root directory
 ├── environment.yaml          <- File for installing conda environment
 ├── Makefile                  <- Makefile with commands like `make train` or `make test`
-├── pyproject.toml            <- Configuration options for testing and linting
+├── pyproject.toml            <- Configuration options for creating python package
 ├── requirements.txt          <- File for installing python dependencies
-├── setup.py                  <- File for installing project as a package
 └── README.md
 ```
 
-You will find an extra folder called `learning` that contains a collection of markdown files with best practices and explanations of how to use the project.
+You will find an extra folder called `docs` that contains a collection of markdown files with best practices and explanations of how to use the project.
 
 ## License
 
