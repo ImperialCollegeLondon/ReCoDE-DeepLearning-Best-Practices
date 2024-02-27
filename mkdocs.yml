@@ -1,5 +1,6 @@
 site_name: ReCoDE-DeepLearning-Best-Practices
 repo_url: https://github.com/ImperialCollegeLondon/ReCoDE-DeepLearning-Best-Practices
+site_url: https://imperialcollegelondon.github.io/ReCoDE-DeepLearning-Best-Practices/
 edit_uri: tree/main/docs/
 theme:
   name: material
