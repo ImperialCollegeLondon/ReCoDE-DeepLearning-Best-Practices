@@ -79,7 +79,10 @@ For configuration, similar to the datamodule, set up a default configuration in 
 
 To get started, you're encouraged to write your own model, but do take the time to examine the example model included in this project. It serves as a practical reference to understand the standard structure and components of a PyTorch Lightning module. Additionally, refer to the PyTorch Lightning documentation, particularly the LightningModule section at [LightningModule Documentation](https://lightning.ai/docs/pytorch/latest/common/lightning_module.html). This resource is invaluable for understanding the different methods in a LightningModule and how they interact in a real-world scenario. By studying these examples and the documentation, you will gain a deeper insight into the efficient implementation and functionalities of your machine learning model.
 
-## **5. Modify Training Configuration**:
+## **5. Create utils**:
+(according to my learning experience following this tutorial, this step should be done before train.py code can be run) please add some text to this step.
+
+## **6. Modify Training Configuration**:
 At this point, you have assembled all the essential components needed to commence the training of your model. Central to this process is the PyTorch Lightning `Trainer`, which orchestrates the training workflow. The Trainer manages crucial aspects of the training process, such as:
 
 - Number of training epochs.
@@ -108,7 +111,7 @@ Let's dive into the `configs/train.yaml` file, which serves as the master config
 
 By configuring these components in the `configs/train.yaml` file, you create a cohesive and flexible training environment. This setup allows you to easily adjust parameters and components to suit different experiments and project needs.
 
-## **6. Start the Training**:
+## **7. Start the Training**:
 Now that you have set up all the necessary components, you are ready to initiate the training of your model. Begin by executing the following command:
 
 ```bash
@@ -140,7 +143,7 @@ python src/train.py trainer=gpu
 
 This command instructs the Trainer to utilize available GPU resources, harnessing their computational power for more efficient training.
 
-## **7. Enhanced Experiment Tracking and Visualization**:
+## **8. Enhanced Experiment Tracking and Visualization**:
 
 Logging training progress and metrics is crucial for monitoring a model's performance throughout the training process. This functionality is configured within the `logger` section of `configs/train.yaml`. By default, the `logger` is set to `null`, indicating that no logging will occur. However, enabling logging is straightforward and highly recommended for a more insightful training experience.
 
@@ -185,7 +188,7 @@ For detailed instructions on logging specific data types and leveraging Wandb's 
 
 In addition to the standard training and validation metrics, this tutorial also covers how to log images and confusion matrices using Wandb. Logging images can provide visual feedback on the model's performance, such as the accuracy of image classifications or the quality of generated images. Confusion matrices, on the other hand, offer a detailed view of the model's prediction accuracy across different classes, helping identify areas where the model may be struggling. Both of these logging capabilities are powerful tools for diagnosing model behavior and guiding improvements. Detailed instructions on how to implement these logging features are included, allowing you to gain deeper insights into your model's performance and make data-driven decisions to enhance its accuracy and effectiveness.
 
-## **8. Evaluate the model**:
+## **9. Evaluate the model**:
 
 After completing the training phase, it's crucial to assess the model's performance using a separate test set. This step is vital for gauging the model's generalization abilities—essentially, its capacity to make accurate predictions on new, unseen data. This unbiased evaluation helps in understanding how the model would perform in real-world scenarios.
 
@@ -213,7 +216,7 @@ The checkpoint file is typically saved in a directory structured by the training
 - Consider evaluating the model on multiple checkpoints to identify the best-performing model over different stages of training.
 - Use a comprehensive set of metrics for evaluation, tailored to your specific problem, to get a holistic view of the model's performance.
 
-## **9. Model Inference on Custom Data**:
+## **10. Model Inference on Custom Data**:
 
 After your model has been rigorously trained and its performance thoroughly evaluated, the next step is to deploy it for practical use — a phase known as inference. Inference is the application of your trained model to make predictions or decisions based on new, unseen data. This step is critical for realizing the model's value in real-world applications, from classifying images to making recommendations.
 
