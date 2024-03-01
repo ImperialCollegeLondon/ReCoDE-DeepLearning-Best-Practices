@@ -107,14 +107,13 @@ The directory structure of new project looks like this:
 ├── scripts                <- Shell scripts
 │
 ├── src                    <- Source code
-│   ├── data                     <- Data scripts
+│   ├── datamodules              <- Data scripts
 │   ├── models                   <- Model scripts
-│   ├── optimizers               <- Optimizers scripts
 │   ├── utils                    <- Utility scripts
 │   │
 │   ├── eval.py                  <- Run evaluation
-│   └── train.py                 <- Run training
-│   └── inference.py             <- Run inference
+│   ├── train.py                 <- Run training
+│   ├── inference.py             <- Run inference
 │
 ├── tests                  <- Tests of any kind
 │

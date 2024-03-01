@@ -3,6 +3,13 @@ from einops import rearrange
 
 
 class DenseNet(nn.Module):
+    """
+    DenseNet class that extends nn.Module.
+
+    Attributes:
+        model (nn.Sequential): Sequential model containing the layers of the network.
+    """
+
     def __init__(
         self,
         input_size: int = 784,
@@ -10,6 +17,15 @@ class DenseNet(nn.Module):
         output_size: int = 10,
         batch_norm: bool = True,
     ):
+        """
+        Initialize DenseNet.
+
+        Args:
+            input_size (int): Size of the input. Default is 784.
+            hidden_sizes (list): List of sizes for each hidden layer. Default is [128, 64, 32].
+            output_size (int): Size of the output. Default is 10.
+            batch_norm (bool): Whether to include batch normalization layers. Default is True.
+        """
         super().__init__()
 
         self.model = nn.ModuleList()
@@ -27,6 +43,18 @@ class DenseNet(nn.Module):
         self.model = nn.Sequential(*self.model)
 
     def forward(self, x):
+        """
+        Define the forward pass of the DenseNet.
+
+        Args:
+            x (torch.Tensor): Input tensor of shape (batch, 1, width, height).
+            width (int): Width of the input tensor (default is 28).
+            height (int): Height of the input tensor (default is 28).
+
+        Returns:
+            x (torch.Tensor): Output tensor of shape (batch, output_size).
+        """
+
         # (batch, 1, width, height) -> (batch, 1*width*height)
         x = rearrange(x, "b c w h -> b (c w h)")
 

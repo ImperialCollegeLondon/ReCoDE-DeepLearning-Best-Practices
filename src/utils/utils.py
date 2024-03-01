@@ -6,7 +6,6 @@ from typing import Callable, List
 from functools import wraps
 import os
 import hydra
-import yaml
 import importlib
 from omegaconf import DictConfig
 from pytorch_lightning import Callback
@@ -287,26 +286,6 @@ def close_loggers() -> None:
             wandb.finish()
 
 
-def unflatten_wandb_config(dictionary):
-    resultDict = dict()
-    for key, value in dictionary.items():
-        parts = key.split("/")
-        d = resultDict
-        for part in parts[:-1]:
-            if part not in d:
-                d[part] = dict()
-            try:
-                d = d[part]
-            except TypeError as e:
-                print(f"Error: {key}, {value}")
-                print(part)
-                raise e
-        if isinstance(value, dict):
-            value = value["value"]
-        d[parts[-1]] = value
-    return resultDict
-
-
 def get_latest_checkpoint(folder_path):
     """Returns path to the latest checkpoint in the folder."""
 
@@ -364,41 +343,6 @@ def configure_cfg_from_checkpoint(cfg):
         cfg.ckpt_path, cfg.config_path = get_latest_checkpoint_and_config(ckpt_path)
         print(f"Using latest checkpoint: {cfg.ckpt_path}")
         print(f"Using config: {cfg.config_path}")
-
-    if cfg.get("config_path"):
-        with open(cfg.get("config_path"), "r") as stream:
-            config = yaml.safe_load(stream)
-        try:
-            unflatten_config = unflatten_wandb_config(config)
-        except Exception:
-            return cfg
-        # update net config with config from checkpoint
-        print("Updating model config.................")
-        config = unflatten_config["model"]["net"]
-        for k in cfg.model.net:
-            if k in config and k not in ["_target_"]:
-                print(f"Overwriting {k}: {cfg.model.net[k]} with {config[k]} (type: {type(config[k])})")
-                if config[k] == "None":
-                    config[k] = None
-                cfg.model.net[k] = config[k]
-        # update datamodule config with config from checkpoint
-        print("Updating datamodule config.............")
-        config = unflatten_config["datamodule"]
-        for k in cfg.datamodule:
-            if k in config and k not in [
-                "_target_",
-                "batch_size",
-                "load_in_memory",
-                "file_list_train",
-                "file_list_test",
-                "file_list_val",
-                "num_frames",
-                "skip_short_videos_thresh",
-            ]:
-                print(f"Overwriting {k}: {cfg.datamodule[k]} with {config[k]}")
-                if config[k] == "None":
-                    config[k] = None
-                cfg.datamodule[k] = config[k]
 
     return cfg
 

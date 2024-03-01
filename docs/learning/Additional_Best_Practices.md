@@ -32,38 +32,6 @@ conda activate myenv
 </details>
 
 <details>
-<summary><b>Use automatic code formatting</b></summary>
-
-Use pre-commit hooks to standardize code formatting of your project and save mental energy.<br>
-Simply install pre-commit package with:
-
-```bash
-pip install pre-commit
-```
-
-Next, install hooks from [.pre-commit-config.yaml](.pre-commit-config.yaml):
-
-```bash
-pre-commit install
-```
-
-After that your code will be automatically reformatted on every new commit.
-
-To reformat all files in the project use command:
-
-```bash
-pre-commit run -a
-```
-
-To update hook versions in [.pre-commit-config.yaml](.pre-commit-config.yaml) use:
-
-```bash
-pre-commit autoupdate
-```
-
-</details>
-
-<details>
 <summary><b>Set private environment variables in .env file</b></summary>
 
 System specific variables (e.g. absolute paths to datasets) should not be under version control or it will result in conflict between different users. Your private keys also shouldn't be versioned since you don't want them to be leaked.<br>
@@ -193,82 +161,26 @@ The style guide is available [here](https://pytorch-lightning.readthedocs.io/en/
 </details>
 
 <details>
-<summary><b>Version control your data and models with DVC</b></summary>
+<summary><b>Use Tmux</b></summary>
 
-Use [DVC](https://dvc.org) to version control big files, like your data or trained ML models.<br>
-To initialize the dvc repository:
+Tmux is a terminal multiplexer, which allows you to run multiple terminal sessions in a single window. It's especially useful when you want to run your training script on a remote server and you want to keep it running even after you close the ssh connection.
 
-```bash
-dvc init
-```
-
-To start tracking a file or directory, use `dvc add`:
-
-```bash
-dvc add data/MNIST
-```
-
-DVC stores information about the added file (or a directory) in a special .dvc file named data/MNIST.dvc, a small text file with a human-readable format. This file can be easily versioned like source code with Git, as a placeholder for the original data:
-
-```bash
-git add data/MNIST.dvc data/.gitignore
-git commit -m "Add raw data"
-```
-
+More about tmux can be found <a href="https://hamvocke.com/blog/a-quick-and-easy-guide-to-tmux/">here</a>.
 </details>
 
 <details>
-<summary><b>Support installing project as a package</b></summary>
+<summary><b>Specify the GPU device</b></summary>
 
-It allows other people to easily use your modules in their own projects.
-Change name of the `src` folder to your project name and complete the `setup.py` file.
-
-Now your project can be installed from local files:
+When running your script on a server with multiple GPUs, you should specify which GPU to use. You can do this by setting the `CUDA_VISIBLE_DEVICES` environment variable:
 
 ```bash
-pip install -e .
+CUDA_VISIBLE_DEVICES=0 python train.py
 ```
 
-Or directly from git repository:
+This will make sure that your script uses only the first GPU. If you want to use multiple GPUs, you can specify them like this:
 
 ```bash
-pip install git+git://github.com/YourGithubName/your-repo-name.git --upgrade
-```
-
-So any file can be easily imported into any other file like so:
-
-```python
-from project_name.models.mnist_module import MNISTLitModule
-from project_name.data.mnist_datamodule import MNISTDataModule
+CUDA_VISIBLE_DEVICES=0,1 python train.py
 ```
 
 </details>
-
-<details>
-<summary><b>Keep local configs out of code versioning</b></summary>
-
-Some configurations are user/machine/installation specific (e.g. configuration of local cluster, or harddrive paths on a specific machine). For such scenarios, a file [configs/local/default.yaml](configs/local/) can be created which is automatically loaded but not tracked by Git.
-
-For example, you can use it for a SLURM cluster config:
-
-```yaml
-# @package _global_
-
-defaults:
-  - override /hydra/launcher@_here_: submitit_slurm
-
-data_dir: /mnt/scratch/data/
-
-hydra:
-  launcher:
-    timeout_min: 1440
-    gpus_per_task: 1
-    gres: gpu:1
-  job:
-    env_set:
-      MY_VAR: /home/user/my/system/path
-      MY_KEY: asdgjhawi8y23ihsghsueity23ihwd
-```
-
-
-<br>

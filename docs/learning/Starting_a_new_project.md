@@ -37,13 +37,15 @@ You can start by using the template available at [Minimal Lightning Hydra Templa
 - Click on the "Use this template" button, located in the top right corner.
 - Follow the on-screen instructions to create a new repository based on this template.
 
-Alternatively, if you prefer to clone the repository:
+If you prefer to clone the repository:
 ```bash
 git clone https://github.com/antonibigata/minimal-lightning-hydra-template.git your-project-name
 cd your-project-name
 rm -rf .git
 ```
 This will clone the repository and remove its git history, allowing you to start a fresh project.
+
+-------------------
 
 Alternatively, if you just want to follow along with this tutorial, you can just clone this repository and follow the instructions.
 
