@@ -114,7 +114,6 @@ The directory structure of new project looks like this:
 │   ├── eval.py                  <- Run evaluation
 │   ├── train.py                 <- Run training
 │   ├── inference.py             <- Run inference
-│   └── optimizers               <- 
 │
 ├── tests                  <- Tests of any kind
 │
