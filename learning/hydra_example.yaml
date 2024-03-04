@@ -1,0 +1,12 @@
+# config.yaml
+
+learning_rate: 0.1
+batch_size: 32
+
+mlp:
+  _target_: torchvision.ops.MLP
+  in_channels: 100
+  hidden_channels: [100]
+
+
+
