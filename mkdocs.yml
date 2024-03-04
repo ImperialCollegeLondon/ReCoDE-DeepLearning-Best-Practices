@@ -31,12 +31,14 @@ theme:
 nav:
   - Home: index.md
   - Quick Start: learning/QuickStart.md
-  - Learning Modules:
+  - Background Knowledge:
       - Lightning: learning/Learning_about_lightning.ipynb
       - Hydra: learning/Learning_about_hydra.ipynb
       - Einops: learning/Learning_about_einops.ipynb
-      - Starting a New Project: learning/Starting_a_new_project.md
+  - Best Practices:
+      - New Project Walkthrough: learning/Starting_a_new_project.md
       - Install as Package: learning/Install_as_package.md
+  - Additional Resources:
       - Template Tricks: learning/Learn_template_tricks.md
       - Additional Best Practices: learning/Additional_Best_Practices.md
 plugins:
